@@ -249,7 +249,7 @@ Func CheckNeedSwipe($TrainTroop)
 	If $TrainTroop > $iSwipeNum Then
 		$iCount = 0
 		While Not _ColorCheck(_GetPixelColor(838, 370 + $g_iMidOffsetY, True), Hex(0XD3D3CB, 6), 10)
-			ClickDrag(617,476,418,476,250)
+			ClickDrag(830,476,25,476,250)
 			If _sleep(500) Then Return False
 			$iCount += 1
 			If $iCount > 3 Then Return False
@@ -257,7 +257,7 @@ Func CheckNeedSwipe($TrainTroop)
 	Else
 		$iCount = 0
 		While Not _ColorCheck(_GetPixelColor(24, 370 + $g_iMidOffsetY, True), Hex(0XD3D3CB, 6), 10)
-			ClickDrag(436,476,636,476,250)
+			ClickDrag(25,476,830,476,250)
 			If _sleep(500) Then Return False
 			$iCount += 1
 			If $iCount > 3 Then Return False

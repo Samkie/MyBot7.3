@@ -107,6 +107,8 @@ Func InitializeMainGUI($bGuiModeUpdate = False)
 	GUIRegisterMsg($WM_ACTIVATEAPP, "GUIControl_WM_ACTIVATEAPP")
 	GUIRegisterMsg($WM_MOVE, "GUIControl_WM_MOVE")
 
+    GUIRegisterMsg($WM_POWERBROADCAST, "GUIControl_WM_POWERBROADCAST")
+
 	GUIRegisterMsg(_WinAPI_RegisterWindowMessage('SHELLHOOK'), 'GUIControl_WM_SHELLHOOK')
 	_WinAPI_RegisterShellHookWindow($g_hFrmBot)
 	;GUIRegisterMsg($WM_PAINT, "GUIControl_WM_MPAINT")

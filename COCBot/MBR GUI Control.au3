@@ -733,6 +733,17 @@ Func GUIControl_WM_CLOSE($hWind, $iMsg, $wParam, $lParam)
 	EndIf
 EndFunc   ;==>GUIControl_WM_CLOSE
 
+Func GUIControl_WM_POWERBROADCAST($hWnd, $Msg, $wParam, $lParam)
+    Switch $wParam
+		Case 0x0009 Or 0x000A ; Power is low
+			SetLog("Stopping Bot because your System is running on low battery!", $COLOR_WARNING)
+			CloseAndroid("GUIControl_WM_POWERBROADCAST")
+			BotStop()
+	EndSwitch
+
+    Return $GUI_RUNDEFMSG
+EndFunc
+
 Func GUIEvents()
 	;@GUI_WinHandle
 	;Local $wasCritical = SetCriticalMessageProcessing(True)

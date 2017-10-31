@@ -118,9 +118,7 @@ Func CheckAvailableUnit($hHBitmap)
 					EndIf
 				Next
 
-				If $iTroopIndex <= 11 Then
-					$AvailableCamp += ($aiTroopsInfo[$i][1] * $MyTroops[Eval("e" & $aiTroopsInfo[$i][0])][2])
-				EndIf
+				$AvailableCamp += ($aiTroopsInfo[$i][1] * $MyTroops[Eval("e" & $aiTroopsInfo[$i][0])][2])
 
 				If $ichkEnableDeleteExcessTroops = 1 Then
 					If $aiTroopsInfo[$i][1] > $MyTroops[Eval("e" & $aiTroopsInfo[$i][0])][3] Then

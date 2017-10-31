@@ -43,10 +43,13 @@ Func CheckAvailableUnit($hHBitmap)
 	Local $sOriDirectory = @ScriptDir & "\COCBot\SamM0d\Images\Troops\"
 	Local $returnProps="objectname"
 	Local $aPropsValues
+	Local $iTroopIndex = -1
+	Local $sTroopName = ""
 	Local $bDeletedExcess = False
 
 	For $i = 0 To 10
 		If _ColorCheck(_GetPixelColor(Int(30 + ($g_iArmy_Av_Troop_Slot_Width * $i)),205,False), Hex(0X4689C8, 6), 20) Then
+		;If Not _ColorCheck(_GetPixelColor(Int(30 + ($g_iArmy_Av_Troop_Slot_Width * $i)),205,False), Hex(0XCDCCC6, 6), 20) Then
 			Local $iPixelDivider = ($g_iArmy_RegionSizeForScan - ($g_aiArmyAvailableSlot[3] - $g_aiArmyAvailableSlot[1])) / 2
 			Assign("g_hHBitmap_Av_Slot" & $i + 1, GetHHBitmapArea($hHBitmap, Int($g_aiArmyAvailableSlot[0] + ($g_iArmy_Av_Troop_Slot_Width* $i) + (($g_iArmy_Av_Troop_Slot_Width - $g_iArmy_RegionSizeForScan) / 2)), $g_aiArmyAvailableSlot[1] - $iPixelDivider, Int($g_aiArmyAvailableSlot[0] + ($g_iArmy_Av_Troop_Slot_Width* $i) + (($g_iArmy_Av_Troop_Slot_Width- $g_iArmy_RegionSizeForScan) / 2) + $g_iArmy_RegionSizeForScan), $g_aiArmyAvailableSlot[3] + $iPixelDivider))
 			Assign("g_hHBitmap_Capture_Av_Slot" & $i + 1, GetHHBitmapArea($hHBitmap, Int($g_aiArmyAvailableSlot[0] + ($g_iArmy_Av_Troop_Slot_Width* $i) + (($g_iArmy_Av_Troop_Slot_Width - $g_iArmy_ImageSizeForScan) / 2)), $g_aiArmyAvailableSlot[1], Int($g_aiArmyAvailableSlot[0] + ($g_iArmy_Av_Troop_Slot_Width* $i) + (($g_iArmy_Av_Troop_Slot_Width- $g_iArmy_ImageSizeForScan) / 2) + $g_iArmy_ImageSizeForScan), $g_aiArmyAvailableSlot[3]))
@@ -101,7 +104,10 @@ Func CheckAvailableUnit($hHBitmap)
 			$aiTroopsInfo[$i][1] = getMyOcr(Eval("g_hHBitmap_Av_SlotQty" & $i + 1),0,0,0,0,"ArmyQTY", True)
 
 			If $aiTroopsInfo[$i][1] <> 0 Then
-				SetLog(" - No. of Available " & MyNameOfTroop(Eval("e" & $aiTroopsInfo[$i][0]), $aiTroopsInfo[$i][1]) & ": " & $aiTroopsInfo[$i][1], (Eval("e" & $aiTroopsInfo[$i][0]) > 11 ? $COLOR_DARKELIXIR : $COLOR_ELIXIR))
+				$iTroopIndex = TroopIndexLookup($aiTroopsInfo[$i][0])
+				$sTroopName = MyNameOfTroop($iTroopIndex, $aiTroopsInfo[$i][1])
+
+				SetLog(" - No. of Available " & $sTroopName & ": " & $aiTroopsInfo[$i][1], ($iTroopIndex > 11 ? $COLOR_DARKELIXIR : $COLOR_ELIXIR))
 				Assign("cur" & $aiTroopsInfo[$i][0], $aiTroopsInfo[$i][1])
 
 				; assign variable for drop trophy troops type
@@ -112,7 +118,9 @@ Func CheckAvailableUnit($hHBitmap)
 					EndIf
 				Next
 
-				$AvailableCamp += ($aiTroopsInfo[$i][1] * $MyTroops[Eval("e" & $aiTroopsInfo[$i][0])][2])
+				If $iTroopIndex <= 11 Then
+					$AvailableCamp += ($aiTroopsInfo[$i][1] * $MyTroops[Eval("e" & $aiTroopsInfo[$i][0])][2])
+				EndIf
 
 				If $ichkEnableDeleteExcessTroops = 1 Then
 					If $aiTroopsInfo[$i][1] > $MyTroops[Eval("e" & $aiTroopsInfo[$i][0])][3] Then
@@ -138,10 +146,13 @@ Func CheckAvailableUnit($hHBitmap)
 	Next
 
 	If $AvailableCamp <> $g_CurrentCampUtilization Then
-		SetLog("Error: Troops size for all available Unit: " & $AvailableCamp & "  -  Camp: " & $g_CurrentCampUtilization, $COLOR_RED)
-		$g_bRestartCheckTroop = True
-		Return False
-	Else
+		If $ichkEnableDeleteExcessTroops = 1 Then
+			SetLog("Error: Troops size for all available Unit: " & $AvailableCamp & "  -  Camp: " & $g_CurrentCampUtilization, $COLOR_RED)
+			$g_bRestartCheckTroop = True
+			Return False
+		EndIf
+	EndIf
+
 		If $bDeletedExcess Then
 			$bDeletedExcess = False
 			If gotoTrainTroops() = False Then Return
@@ -199,6 +210,6 @@ Func CheckAvailableUnit($hHBitmap)
 			GdiDeleteBitmap($g_hBitmap)
 		EndIf
 		Return True
-	EndIf
+
 	Return False
 EndFunc

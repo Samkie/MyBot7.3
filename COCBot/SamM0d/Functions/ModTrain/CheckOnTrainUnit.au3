@@ -220,6 +220,7 @@ Func CheckOnTrainUnit($hHBitmap)
 	Else
 		$bDeletedExcess = False
 		$bGotOnQueueFlag = False
+
 		For $i = 0 To UBound($MyTroops) - 1
 			Local $itempTotal = Eval("OnQ" & $MyTroops[$i][0])
 			If $itempTotal > 0 Then
@@ -235,7 +236,9 @@ Func CheckOnTrainUnit($hHBitmap)
 				$iOnQueueCamp += $itempTotal * $MyTroops[$i][2]
 			EndIf
 		Next
+
 		If $bGotOnQueueFlag And Not $bGotOnTrainFlag Then
+			If $ichkEnableDeleteExcessTroops = 1 Then
 			If $iAvailableCamp < $iMyTroopsCampSize Or $ichkDisablePretrainTroops Then
 				If $ichkDisablePretrainTroops Then
 					SetLog("Pre-Train troops disable by user, remove all pre-train troops.", $COLOR_ERROR)
@@ -247,6 +250,7 @@ Func CheckOnTrainUnit($hHBitmap)
 				RemoveAllPreTrainTroops()
 				$g_bRestartCheckTroop = True
 				Return False
+			EndIf
 			EndIf
 		EndIf
 		If $bDeletedExcess Then
@@ -282,6 +286,7 @@ Func CheckOnTrainUnit($hHBitmap)
 		; if don't have on train troops then i check the pre train troop size
 		If $bGotOnQueueFlag And Not $bGotOnTrainFlag Then
 			If $aiTroopInfo[0][1] > 0 Then
+				If $ichkEnableDeleteExcessTroops = 1 Then
 				If $iOnQueueCamp <> $iMyTroopsCampSize Then
 					SetLog("Error: Pre-Train Troops size not correct.", $COLOR_ERROR)
 					SetLog("Error: Detected Pre-Train Troops size = " & $iOnQueueCamp & ", My Troops size = " & $iMyTroopsCampSize, $COLOR_ERROR)
@@ -289,6 +294,7 @@ Func CheckOnTrainUnit($hHBitmap)
 					RemoveAllPreTrainTroops()
 					$g_bRestartCheckTroop = True
 					Return False
+				EndIf
 				EndIf
 			EndIf
 			If $ichkDisablePretrainTroops Then

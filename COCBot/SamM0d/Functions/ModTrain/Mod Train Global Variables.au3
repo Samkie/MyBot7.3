@@ -68,6 +68,32 @@ Global $MyTroops[19][5] = _
 ["Bowl"	, 19,  6, 0,0]]
 ;name,order,size,unit quantity,train cost
 
+Global $eEventTroop1 = 51
+Global $eEventTroop1 = 52
+Global $eEventSpell1 = 61
+Global $eEventSpell1 = 62
+
+Global $MyEventTroops[4][5] = _
+[["EventTroop1",  1,  1, 0,0], _
+["EventTroop2"	,  2,  20, 0,0], _
+["EventSpell1"	, 3, 2, 0,0], _
+["EventSpell2"	, 4,  2, 0,0]]
+
+Global $CurEventTroop1 = 0
+Global $CurEventTroop2 = 0
+Global $CurEventSpell1 = 0
+Global $CurEventSpell2 = 0
+
+Global $OnQEventTroop1 = 0
+Global $OnQEventTroop2 = 0
+Global $OnQEventSpell1 = 0
+Global $OnQEventSpell2 = 0
+
+Global $OnTEventTroop1 = 0
+Global $OnTEventTroop2 = 0
+Global $OnTEventSpell1 = 0
+Global $OnTEventSpell2 = 0
+
 Global Enum $eTrainBarb, $eTrainPumpkin, $eTrainArch, $eTrainGiant, $eTrainGiantSkeleton, $eTrainGobl, $eTrainWall, $eTrainBall, $eTrainWiza, $eTrainHeal, $eTrainDrag, $eTrainPekk, $eTrainBabyD, $eTrainMine, _
 		$eTrainMini, $eTrainHogs, $eTrainValk, $eTrainGole, $eTrainWitc, $eTrainLava, $eTrainBowl
 

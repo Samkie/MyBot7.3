@@ -242,6 +242,12 @@ Func _VillageSearch() ;Control for searching a village that meets conditions
 			SetLog($GetResourcesTXT, $COLOR_SUCCESS, "Lucida Console", 7.5)
 			SetLog("      " & "Milking Attack LOW CPU SETTINGS Found!", $COLOR_SUCCESS, "Lucida Console", 7.5)
 			$logwrited = True
+			$g_iMatchMode = $DB
+			ExitLoop
+		ElseIf $match[$DB] And $dbBase Then
+			SetLog($GetResourcesTXT, $COLOR_SUCCESS, "Lucida Console", 7.5)
+			SetLog("      " & "Dead Base Found!", $COLOR_SUCCESS, "Lucida Console", 7.5)
+			$logwrited = True
 			; SamM0d
 			Local $blnFlagSearchAnotherBase = False
 			If $iChkNoLeague[$DB] = 1 Then
@@ -339,12 +345,6 @@ Func _VillageSearch() ;Control for searching a village that meets conditions
 				EndIf
 			EndIf
 			; =====END samm0d====
-		ElseIf $match[$DB] And $dbBase Then
-			SetLog($GetResourcesTXT, $COLOR_SUCCESS, "Lucida Console", 7.5)
-			SetLog("      " & "Dead Base Found!", $COLOR_SUCCESS, "Lucida Console", 7.5)
-			$logwrited = True
-			$g_iMatchMode = $DB
-			ExitLoop
 		ElseIf $match[$LB] And Not $dbBase Then
 			SetLog($GetResourcesTXT, $COLOR_SUCCESS, "Lucida Console", 7.5)
 			SetLog("      " & "Live Base Found!", $COLOR_SUCCESS, "Lucida Console", 7.5)

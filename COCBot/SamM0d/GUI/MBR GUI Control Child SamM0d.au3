@@ -578,6 +578,10 @@ Func chkEnableCustomOCR4CCRequest()
 	$ichkEnableCustomOCR4CCRequest = (GUICtrlRead($chkEnableCustomOCR4CCRequest) = $GUI_CHECKED ? 1 : 0)
 EndFunc
 
+Func chkEnableUseEventTroop()
+	$ichkEnableUseEventTroop = (GUICtrlRead($chkEnableUseEventTroop) = $GUI_CHECKED ? 1 : 0)
+EndFunc
+
 ;~ Func chkRemoveSpecialObstacleBB()
 ;~ 	If GUICtrlRead($chkRemoveSpecialObstacleBB) = $GUI_CHECKED Then
 ;~ 		$ichkRemoveSpecialObstacleBB = 1

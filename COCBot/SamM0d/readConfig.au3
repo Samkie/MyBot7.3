@@ -18,6 +18,8 @@ Global $iMultiFingerStyle = 0
 ; Multi Finger (LunaEclipse)
 IniReadS($iMultiFingerStyle, $g_sProfileConfigPath, "MultiFinger", "Select", "1")
 
+IniReadS($ichkEnableUseEventTroop, $g_sProfileConfigPath, "EnableUseEventTroop", "Enable", "0", "Int")
+
 ;~ ; Remove Special Obstacle at Builder Base
 ;~ IniReadS($ichkRemoveSpecialObstacleBB, $g_sProfileConfigPath, "RemoveSpecialObstacleBB", "Enable", "1", "Int")
 

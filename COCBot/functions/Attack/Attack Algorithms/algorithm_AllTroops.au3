@@ -235,6 +235,28 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 		EndIf
 	EndIf
 
+	If $ichkEnableUseEventTroop = 1 Then
+		Local $iListInfoDeployCount = UBound($listInfoDeploy) + 2
+		ReDim $listInfoDeploy[$iListInfoDeployCount][5]
+		For $i = UBound($listInfoDeploy) - 2 To 1 Step -1
+			$listInfoDeploy[$i][0] = $listInfoDeploy[$i-1][0]
+			$listInfoDeploy[$i][1] = $listInfoDeploy[$i-1][1]
+			$listInfoDeploy[$i][2] = $listInfoDeploy[$i-1][2]
+			$listInfoDeploy[$i][3] = $listInfoDeploy[$i-1][3]
+			$listInfoDeploy[$i][4] = $listInfoDeploy[$i-1][4]
+		Next
+		$listInfoDeploy[0][0] = 51
+		$listInfoDeploy[0][1] = $nbSides
+		$listInfoDeploy[0][2] = 1
+		$listInfoDeploy[0][3] = 1
+		$listInfoDeploy[0][4] = 2
+		$listInfoDeploy[$iListInfoDeployCount-1][0] = 52
+		$listInfoDeploy[$iListInfoDeployCount-1][1] = $nbSides
+		$listInfoDeploy[$iListInfoDeployCount-1][2] = 1
+		$listInfoDeploy[$iListInfoDeployCount-1][3] = 1
+		$listInfoDeploy[$iListInfoDeployCount-1][4] = 0
+	EndIf
+
 	; samm0d
 	If $g_aiAttackStdDropSides[$g_iMatchMode] = 4 And  $g_iMatchMode = $DB Then
 		SetLog(_PadStringCenter("Multi Finger Attack", 50, "="), $COLOR_BLUE)

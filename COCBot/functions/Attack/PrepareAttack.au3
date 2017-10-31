@@ -181,6 +181,10 @@ Func IsSpecialTroopToBeUsed($pMatchMode, $pTroopType)
 				If $g_abAttackUseCloneSpell[$iTempMode] Then Return True
 			Case $eSkSpell
 				If $g_abAttackUseSkeletonSpell[$iTempMode] Then Return True
+			Case 51 To 52
+				If $ichkEnableUseEventTroop = 1 Then Return True
+			Case 61 To 62
+				If $ichkEnableUseEventTroop = 1 Then Return True
 			Case Else
 				Return False
 		EndSwitch

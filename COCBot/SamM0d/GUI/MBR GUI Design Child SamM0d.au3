@@ -844,6 +844,11 @@ $txtLogoutLimitTime = GUICtrlCreateInput("240", $x + 300, $y+2, 35, 20, BitOR($G
 	GUICtrlSetLimit(-1, 4)
 	GUICtrlSetOnEvent(-1, "txtLogoutLimitTime")
 
+$y += 25
+$chkEnableUseEventTroop = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "Enable use Event troops and spells", "Enable use Event troops and spells - All modes"), $x+10, $y, -1, -1)
+	GUICtrlSetOnEvent(-1, "chkEnableUseEventTroop")
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
+
 ;~ $y += 25
 ;~ $chkRemoveSpecialObstacleBB = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "Remove Special Obstacle BB", "Remove Special Obstacle at Builder Base"), $x+10, $y, -1, -1)
 ;~ 	GUICtrlSetOnEvent(-1, "chkRemoveSpecialObstacleBB")

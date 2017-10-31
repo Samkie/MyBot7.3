@@ -277,6 +277,8 @@ Global $ichkSwitchDonTypeOnlyWhenAtkTypeNotReady = False
 Global $bAvoidSwitch = False
 ;Global $bNowWaitingConfirm = False
 
+Global $ichkEnableUseEventTroop, $chkEnableUseEventTroop
+
 Global $aSwitchList[1][8]
 
 Global $aProfileStats[44][9] = _

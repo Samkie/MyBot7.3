@@ -33,10 +33,15 @@ Func unitLocation($kind) ; Gets the location of the unit type on the bar.
 EndFunc   ;==>unitLocation
 
 Func getUnitLocationArray() ; Gets the location on the bar for every type of unit.
-	Local $result[$eCCSpell + 1]
-	For $i = 0 To UBound($result) - 1
+	Local $result[63]
+	For $i = 0 To $eCCSpell + 1
 		$result[$i] = -1
 	Next
+
+	$result[51] = -1
+	$result[52] = -1
+	$result[61] = -1
+	$result[62] = -1
 
 	; Loop through all the bar and assign it position to the respective unit.
 	For $i = 0 To UBound($g_avAttackTroops) - 1
@@ -61,10 +66,16 @@ EndFunc   ;==>unitCount
 
 Func unitCountArray() ; Gets a count of the number of units for every type of unit.
 	;Local $result[$eCCSpell + 1] = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]
-	Local $result[$eCCSpell + 1]
-	For $i = 0 To UBound($result) - 1
+	Local $result[63]
+
+	For $i = 0 To $eCCSpell + 1
 		$result[$i] = -1
 	Next
+
+	$result[51] = -1
+	$result[52] = -1
+	$result[61] = -1
+	$result[62] = -1
 
 	; Loop through all the bar and assign its unit count to the respective unit.
 	For $i = 0 To UBound($g_avAttackTroops) - 1

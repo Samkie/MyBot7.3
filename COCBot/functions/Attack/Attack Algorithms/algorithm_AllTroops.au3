@@ -282,6 +282,25 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 				If _Sleep($DELAYALGORITHM_ALLTROOPS5) Then Return
 			EndIf
 		Next
+		; samm0d
+		If $ichkEnableUseEventTroop = 1 Then
+			If LaunchTroop(51, $nbSides, 0, 1) = True Then
+				If $g_iActivateKQCondition = "Auto" Then CheckHeroesHealth()
+				If _Sleep($DELAYALGORITHM_ALLTROOPS5) Then Return
+			EndIf
+			If LaunchTroop(52, $nbSides, 0, 1) = True Then
+				If $g_iActivateKQCondition = "Auto" Then CheckHeroesHealth()
+				If _Sleep($DELAYALGORITHM_ALLTROOPS5) Then Return
+			EndIf
+			If LaunchTroop(61, $nbSides, 0, 1) = True Then
+				If $g_iActivateKQCondition = "Auto" Then CheckHeroesHealth()
+				If _Sleep($DELAYALGORITHM_ALLTROOPS5) Then Return
+			EndIf
+			If LaunchTroop(62, $nbSides, 0, 1) = True Then
+				If $g_iActivateKQCondition = "Auto" Then CheckHeroesHealth()
+				If _Sleep($DELAYALGORITHM_ALLTROOPS5) Then Return
+			EndIf
+		EndIf
 	Next
 
 	CheckHeroesHealth()

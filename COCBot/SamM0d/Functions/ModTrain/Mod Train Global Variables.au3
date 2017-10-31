@@ -94,7 +94,6 @@ Global $MyTroopsButton[21][3] = _
 ["Lava"	, 3, 1], _
 ["Bowl"	, 2, 2]]
 
-
 ;~ Global $MyTroopsButton[19][3] = _
 ;~ [["Barb", 0, 0], _
 ;~ ["Arch"	, 1, 0], _

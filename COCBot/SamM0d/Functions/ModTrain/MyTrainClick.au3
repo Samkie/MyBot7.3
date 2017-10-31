@@ -43,7 +43,6 @@ Func MyTrainClick($TroopButton, $iTimes = 1, $iSpeed = 0, $sdebugtxt="", $bIsBre
 			$aRegionForScan[1] = $aTroopsRegionForScan[$iRegionForClick][1]
 			$aRegionForScan[2] = $aTroopsRegionForScan[$iRegionForClick][2]
 			$aRegionForScan[3] = $aTroopsRegionForScan[$iRegionForClick][3]
-
 		Else
 			$iRegionForClick = $MySpellsButton[Eval("eBrew" & $TroopButton)][1]
 			$aRegionForScan[0] = $aSpellsRegionForScan[$iRegionForClick][0]
@@ -79,7 +78,6 @@ Func MyTrainClick($TroopButton, $iTimes = 1, $iSpeed = 0, $sdebugtxt="", $bIsBre
 		If IsArray($aButtonXY) Then
 			$aButtonXY[0] = $aRegionForScan[0] + $aButtonXY[0]
 			$aButtonXY[1] = $aRegionForScan[1] + $aButtonXY[1]
-
 			Local $iRandNum = Random($iHLFClickMin-1,$iHLFClickMax-1,1) ;Initialize value (delay awhile after $iRandNum times click)
 			Local $iRandX = Random($aButtonXY[0] - 5,$aButtonXY[0] + 5,1)
 			Local $iRandY = Random($aButtonXY[1] - 5,$aButtonXY[1] + 5,1)
@@ -96,10 +94,78 @@ Func MyTrainClick($TroopButton, $iTimes = 1, $iSpeed = 0, $sdebugtxt="", $bIsBre
 				EndIf
 			Next
 		Else
-			SetLog("Cannot find button: " & $TroopButton & " for click", $COLOR_ERROR)
-			Return False
+			; try fix train button
+			If $g_iSamM0dDebug = 1 Then SetLog("Cannot find button: " & $TroopButton & " , $iRegionForClick = " & $iRegionForClick, $COLOR_ERROR)
+			Switch $iRegionForClick
+				Case 0
+					$iRegionForClick = 1
+				case 1
+					$iRegionForClick = 0
+				Case 2
+					$iRegionForClick = 3
+				case 3
+					$iRegionForClick = 2
+			EndSwitch
+
+			If $bIsBrewSpell = False Then
+				$aRegionForScan[0] = $aTroopsRegionForScan[$iRegionForClick][0]
+				$aRegionForScan[1] = $aTroopsRegionForScan[$iRegionForClick][1]
+				$aRegionForScan[2] = $aTroopsRegionForScan[$iRegionForClick][2]
+				$aRegionForScan[3] = $aTroopsRegionForScan[$iRegionForClick][3]
+			Else
+				$aRegionForScan[0] = $aSpellsRegionForScan[$iRegionForClick][0]
+				$aRegionForScan[1] = $aSpellsRegionForScan[$iRegionForClick][1]
+				$aRegionForScan[2] = $aSpellsRegionForScan[$iRegionForClick][2]
+				$aRegionForScan[3] = $aSpellsRegionForScan[$iRegionForClick][3]
+			EndIf
+
+			_CaptureRegion2($aRegionForScan[0],$aRegionForScan[1],$aRegionForScan[2],$aRegionForScan[3])
+			Local $aFileToScan = _FileListToArrayRec($g_sSamM0dImageLocation & "\TrainButtons", $TroopButton & "*.png", $FLTAR_FILES, $FLTAR_NORECUR, $FLTAR_SORT, $FLTAR_NOPATH)
+			If UBound($aFileToScan) > 1 Then
+				For $i = 1 To UBound($aFileToScan) - 1
+					If $g_iSamM0dDebug = 1 Then SetLog("$aFileToScan[" & $i & "]: " & $aFileToScan[$i])
+					If StringInStr($aFileToScan[$i],$TroopButton) Then
+						Local $result = FindImageInPlace($TroopButton, $g_sSamM0dImageLocation & "\TrainButtons\" & $aFileToScan[$i], "0,0," & $aRegionForScan[2] - $aRegionForScan[0] & "," & $aRegionForScan[3] - $aRegionForScan[1], False)
+						If StringInStr($result, ",") > 0 Then
+							$aButtonXY = StringSplit($result, ",", $STR_NOCOUNT)
+							ExitLoop
+						EndIf
+					EndIf
+				Next
+			Else
+				SetLog("Cannot find image file " & $TroopButton & " for scan", $COLOR_ERROR)
+				Return False
+			EndIf
+
+			_debugSaveHBitmapToImage($g_hHBitmap2, "RegionForScan")
+			If $g_hHBitmap2 <> 0 Then
+				GdiDeleteHBitmap($g_hHBitmap2)
+			EndIf
+
+			If IsArray($aButtonXY) Then
+				$aButtonXY[0] = $aRegionForScan[0] + $aButtonXY[0]
+				$aButtonXY[1] = $aRegionForScan[1] + $aButtonXY[1]
+				Local $iRandNum = Random($iHLFClickMin-1,$iHLFClickMax-1,1) ;Initialize value (delay awhile after $iRandNum times click)
+				Local $iRandX = Random($aButtonXY[0] - 5,$aButtonXY[0] + 5,1)
+				Local $iRandY = Random($aButtonXY[1] - 5,$aButtonXY[1] + 5,1)
+				If isProblemAffect(True) Then Return
+				For $i = 0 To ($iTimes - 1)
+					HMLPureClick(Random($iRandX-2,$iRandX+2,1), Random($iRandY-2,$iRandY+2,1))
+					If $i >= $iRandNum Then
+						$iRandNum = $iRandNum + Random($iHLFClickMin,$iHLFClickMax,1)
+						$iRandX = Random($aButtonXY[0] - 5,$aButtonXY[0] + 5,1)
+						$iRandY = Random($aButtonXY[1] - 5,$aButtonXY[1] + 5,1)
+						If _Sleep(Random(($isldHLFClickDelayTime*90)/100, ($isldHLFClickDelayTime*110)/100, 1), False) Then ExitLoop
+					Else
+						If _Sleep(Random(($iSpeed*90)/100, ($iSpeed*110)/100, 1), False) Then ExitLoop
+					EndIf
+				Next
+			Else
+				SetLog("Cannot find button: " & $TroopButton & " for click", $COLOR_ERROR)
+				Return False
+			EndIf
+			Return True
 		EndIf
-		Return True
 	Else
 		Return False
 	EndIf

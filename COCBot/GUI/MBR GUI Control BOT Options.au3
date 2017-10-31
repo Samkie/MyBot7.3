@@ -266,26 +266,24 @@ Func chkmakeIMGCSV()
 EndFunc   ;==>chkmakeIMGCSV
 
 Func btnTestTrain()
-	Local $currentOCR = $g_bDebugOcr
 	Local $currentRunState = $g_bRunState
 	$g_bRunState = True
-	BeginImageTest()
 
-	Local $result
-	SetLog("Testing checkArmyCamp()", $COLOR_INFO)
-	$result = checkArmyCamp()
-	If @error Then $result = "Error " & @error & ", " & @extended & ", " & ((IsArray($result)) ? (_ArrayToString($result, ",")) : ($result))
-	SetLog("Result checkArmyCamp() = " & $result, $COLOR_INFO)
+	_GUICtrlTab_ClickTab($g_hTabMain, 0)
+	SetLog("===START===")
+	Local $hTimer = __TimerInit()
 
-	SetLog("Testing getArmyHeroTime()", $COLOR_INFO)
-	$result = getArmyHeroTime("all")
-	If @error Then $result = "Error " & @error & ", " & @extended & ", " & ((IsArray($result)) ? (_ArrayToString($result, ",")) : ($result))
-	SetLog("Result getArmyHeroTime() = " & $result, $COLOR_INFO)
-	SetLog("Testing Train DONE", $COLOR_INFO)
+	; samm0d
 
-	EndImageTest()
+	$g_bRestart = False
+	$tempDisableTrain=False
+	$tempDisableBrewSpell=False
+    ModTrain()
 
-	$g_bDebugOcr = $currentOCR
+
+	SetLog("Elapsed: " & Round(__TimerDiff($hTimer) / 1000, 2))
+	SetLog("===END===")
+
 	$g_bRunState = $currentRunState
 EndFunc   ;==>btnTestTrain
 
@@ -316,7 +314,8 @@ Func btnTestDonateCC()
 	Setlog("Detecting Troops...")
 	DetectSlotTroop($eBowl)
 	Setlog("Detecting Spells...")
-	DetectSlotTroop($eSkSpell)
+	; samm0d
+	DetectSlotSpell($eSkSpell)
 	SetLog(_PadStringCenter(" Test DonateCC end ", 54, "="), $COLOR_INFO)
 	ShellExecute($g_sProfileTempDebugPath & "donateCC_")
 

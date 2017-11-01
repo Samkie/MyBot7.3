@@ -25,7 +25,8 @@ IniReadS($ichkEnableUseEventTroop, $g_sProfileConfigPath, "EnableUseEventTroop",
 IniReadS($ichkEnableDonateWhenReady, $g_sProfileConfigPath, "EnableDonateWhenReady", "Enable", "0", "Int")
 
 ; stop bot when low battery
-IniReadS($ichkEnableDonateWhenReady, $g_sProfileConfigPath, "EnableStopBotWhenLowBattery", "Enable", "0", "Int")
+IniReadS($ichkEnableStopBotWhenLowBattery, $g_sProfileConfigPath, "EnableStopBotWhenLowBattery", "Enable", "0", "Int")
+
 ;~ ; Remove Special Obstacle at Builder Base
 ;~ IniReadS($ichkRemoveSpecialObstacleBB, $g_sProfileConfigPath, "RemoveSpecialObstacleBB", "Enable", "1", "Int")
 

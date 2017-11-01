@@ -301,7 +301,7 @@ Func InitializeControlVariables()
 	$oAlwaysEnabledControls($grpMySwitch) = 1
 	$oAlwaysEnabledControls($chkProfileImage) = 1
 
-	$oAlwaysEnabledControls($btnMakeSwitchADBFolder) = 1
+	;$oAlwaysEnabledControls($btnMakeSwitchADBFolder) = 1
 	$oAlwaysEnabledControls($chkUseADBLoadVillage) = 1
 
 	$oAlwaysEnabledControls($chkEnableContinueStay) = 1

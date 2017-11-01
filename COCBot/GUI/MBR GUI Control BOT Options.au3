@@ -280,6 +280,14 @@ Func btnTestTrain()
 	$tempDisableBrewSpell=False
     ModTrain()
 
+;~ 			If isOnBuilderIsland() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost) And SwitchBetweenBases()) Then
+;~ 				CollectBuilderBase()
+;~ 				BuilderBaseReport()
+;~ 				StartClockTowerBoost()
+;~ 				MainSuggestedUpgradeCode()
+;~ 				; switch back to normal village
+;~ 				SwitchBetweenBases()
+;~ 			EndIf
 
 ;~ 	For $i = 0 To UBound($MyTroops) - 1
 ;~ 		SetLog("MyTroops[" & $MyTroops[$i][0] & "], Ready - " & Eval("Ready" & $MyTroops[$i][0]))

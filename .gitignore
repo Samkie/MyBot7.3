@@ -133,6 +133,7 @@ CSV/THsnipe/[Tt]est*.csv
 ![Ii]mages/Storages/Gold/*.png
 ![Ii]mages/Storages/Elixir/*.png
 ![Ii]mgxml/AttackBar/*.png
+![Ii]mgxml/Resources/BuildersBase/AutoUpgrade/NewBuildings/Slot/*.png
 
 # Debug
 [Ll]ib/[Dd]ebug/

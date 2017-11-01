@@ -38,8 +38,8 @@ Global $aButtonOpenProfile[9]    	  	  = [28 , 23               , 46 , 46       
 Global $aButtonOpenShieldInfo[9] 	  	  = [430, 7                , 442, 20               , 436, 14               ,    0xF5F5ED, 6, "=-= Open Shield Info Page"] ; main page, open shield info page
 Global $aButtonOpenLaunchAttack[9] 		  = [30 , 610 + $g_iMidOffsetY, 90 , 670 + $g_iMidOffsetY, 22 , 644 + $g_iMidOffsetY, 	0x9A4916, 30, "=-= Open Launce Attack Page"] ; Main Page, Attack! Button
 
-Global $aButtonClanWindowOpen[9]   	      = [8  , 325 + $g_iMidOffsetY, 28 , 380 + $g_iMidOffsetY, 16 , 380 + $g_iMidOffsetY, 	0xB84408, 20, "=-= Open Chat Window"] ; main page, clan chat Button
-Global $aButtonClanWindowClose[9]  	      = [321, 325 + $g_iMidOffsetY, 342, 380 + $g_iMidOffsetY, 330, 380 + $g_iMidOffsetY, 	0xB84408, 20, "=-= Close Chat Window"] ; main page, clan chat Button
+Global $aButtonClanWindowOpen[9]   	      = [8  , 325 + $g_iMidOffsetY, 28 , 380 + $g_iMidOffsetY, 16 , 380 + $g_iMidOffsetY, 	0xC55115, 20, "=-= Open Chat Window"] ; main page, clan chat Button
+Global $aButtonClanWindowClose[9]  	      = [321, 325 + $g_iMidOffsetY, 342, 380 + $g_iMidOffsetY, 330, 380 + $g_iMidOffsetY, 	0xC55115, 20, "=-= Close Chat Window"] ; main page, clan chat Button
 Global $aButtonClanChatTab[9]    	  	  = [175, 14               , 275, 30               , 280, 30               ,    0x706C50, 20, "=-= Switch to Clan Channel"] ; Chat page, ClanChat Tab
 Global $aButtonClanDonateScrollUp[9] 	  = [289, 69  + $g_iMidOffsetY, 299, 83  + $g_iMidOffsetY, 293, 73  + $g_iMidOffsetY,  	0xFFFFFF, 10, "=-= Donate Scroll Up"] ; Donate / Chat Page, Scroll up Button
 Global $aButtonClanDonateScrollDown[9] 	  = [289, 620 + $g_iMidOffsetY, 299, 636 + $g_iMidOffsetY, 294, 625 + $g_iMidOffsetY, 	0xFFFFFF, 10, "=-= Donate Scroll Down"] ; Donate / Chat Page, Scroll Down Button

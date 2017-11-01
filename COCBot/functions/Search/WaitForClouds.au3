@@ -111,10 +111,9 @@ Func WaitForClouds()
 		EndIf
 
 		ForceCaptureRegion() ; ensure screenshots are not cached
-
 		;=================samm0d - launch attack button and chat button found, back to main?
-		If _ColorCheck(_GetPixelColor($aButtonOpenLaunchAttack[4], $aButtonOpenLaunchAttack[5],$g_bNoCapturePixel), Hex($aButtonOpenLaunchAttack[6], 6),$aButtonOpenLaunchAttack[7]) And _
-		_ColorCheck(_GetPixelColor($aButtonClanWindowOpen[4], $aButtonClanWindowOpen[5],$g_bNoCapturePixel), Hex($aButtonClanWindowOpen[6], 6),$aButtonClanWindowOpen[7]) Then
+		If _ColorCheck(_GetPixelColor($aButtonOpenLaunchAttack[4], $aButtonOpenLaunchAttack[5],$g_bCapturePixel), Hex($aButtonOpenLaunchAttack[6], 6),$aButtonOpenLaunchAttack[7]) And _
+		_ColorCheck(_GetPixelColor($aButtonClanWindowOpen[4], $aButtonClanWindowOpen[5],$g_bCapturePixel), Hex($aButtonClanWindowOpen[6], 6),$aButtonClanWindowOpen[7]) Then
 			If $bEnabledGUI = True Then
 				SetLog("Disable bot controls after long wait time", $COLOR_SUCCESS)
 				AndroidShieldForceDown(False)
@@ -161,6 +160,14 @@ Func EnableLongSearch()
 	If chkSearchText() = True Then ;verify still in clouds by screen text and attempt to keep alive with chat tab
 		$iCount = 0 ; initialize safety loop counter #1
 		While 1
+			;=================samm0d - launch attack button and chat button found, back to main?
+			If _ColorCheck(_GetPixelColor($aButtonOpenLaunchAttack[4], $aButtonOpenLaunchAttack[5],$g_bCapturePixel), Hex($aButtonOpenLaunchAttack[6], 6),$aButtonOpenLaunchAttack[7]) And _
+			_ColorCheck(_GetPixelColor($aButtonClanWindowOpen[4], $aButtonClanWindowOpen[5],$g_bCapturePixel), Hex($aButtonClanWindowOpen[6], 6),$aButtonClanWindowOpen[7]) Then
+				SetLog("Something happened that cause back to main screen when searching village for attack.",$COLOR_ERROR)
+				Return False
+			EndIf
+			;========================
+
 			If _CheckPixel($aOpenChatTab, $g_bCapturePixel, Default, "OpenChatTab check", $COLOR_DEBUG) Then ; check for open chat tab
 				ClickP($aOpenChatTab, 1, 0, "#0510") ; Open chat tab
 				If _Sleep($DELAYGETRESOURCES1) Then Return

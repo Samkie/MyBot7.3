@@ -18,7 +18,11 @@ Global $iMultiFingerStyle = 0
 ; Multi Finger (LunaEclipse)
 IniReadS($iMultiFingerStyle, $g_sProfileConfigPath, "MultiFinger", "Select", "1")
 
+; use Event troop
 IniReadS($ichkEnableUseEventTroop, $g_sProfileConfigPath, "EnableUseEventTroop", "Enable", "0", "Int")
+
+; donate only when troop pre train ready
+IniReadS($ichkEnableDonateWhenReady, $g_sProfileConfigPath, "EnableDonateWhenReady", "Enable", "0", "Int")
 
 ;~ ; Remove Special Obstacle at Builder Base
 ;~ IniReadS($ichkRemoveSpecialObstacleBB, $g_sProfileConfigPath, "RemoveSpecialObstacleBB", "Enable", "1", "Int")

@@ -249,6 +249,7 @@ Func TroopsAndSpellsChecker($bDisableTrain = True, $bDisableBrewSpell = True, $b
 				Assign("Cur" & $MySpells[$i][0] & "Spell", 0)
 				Assign("OnQ" & $MySpells[$i][0] & "Spell", 0)
 				Assign("OnT" & $MySpells[$i][0] & "Spell", 0)
+				Assign("Ready" & $MySpells[$i][0] & "Spell", 0)
 			Next
 
 			If gotoBrewSpells() = False Then ExitLoop
@@ -326,6 +327,7 @@ Func TroopsAndSpellsChecker($bDisableTrain = True, $bDisableBrewSpell = True, $b
 				Assign("cur" & $MyTroops[$i][0], 0)
 				Assign("OnQ" & $MyTroops[$i][0], 0)
 				Assign("OnT" & $MyTroops[$i][0], 0)
+				Assign("Ready" & $MyTroops[$i][0], 0)
 			Next
 			;============================
 

@@ -25,6 +25,7 @@ Func CheckOnBrewUnit($hHBitmap)
 	For $i = 0 To UBound($MySpells) - 1
 		Assign("OnT" & $MySpells[$i][0] & "Spell", 0)
 		Assign("OnQ" & $MySpells[$i][0] & "Spell", 0)
+		Assign("Ready" & $MySpells[$i][0] & "Spell", 0)
 		Assign("RemoveSpellUnitOfOnT" & $MySpells[$i][0], 0)
 		Assign("RemoveSpellUnitOfOnQ" & $MySpells[$i][0], 0)
 	Next
@@ -77,7 +78,6 @@ Func CheckOnBrewUnit($hHBitmap)
 			Local $iPixelDivider = ($g_iArmy_RegionSizeForScan - ($g_aiArmyOnBrewSlot[3] - $g_aiArmyOnBrewSlot[1])) / 2
 			Assign("g_hHBitmap_OB_Slot" & $i + 1, GetHHBitmapArea($hHBitmap, Int($g_aiArmyOnBrewSlot[0] + ($g_iArmy_OnT_Troop_Slot_Width * $i) + (($g_iArmy_OnT_Troop_Slot_Width - $g_iArmy_RegionSizeForScan) / 2)), $g_aiArmyOnBrewSlot[1] - $iPixelDivider, Int($g_aiArmyOnBrewSlot[0] + ($g_iArmy_OnT_Troop_Slot_Width* $i) + (($g_iArmy_OnT_Troop_Slot_Width - $g_iArmy_RegionSizeForScan) / 2) + $g_iArmy_RegionSizeForScan), $g_aiArmyOnBrewSlot[3] + $iPixelDivider))
 			Assign("g_hHBitmap_Capture_OB_Slot" & $i + 1, GetHHBitmapArea($hHBitmap, Int($g_aiArmyOnBrewSlot[0] + ($g_iArmy_OnT_Troop_Slot_Width* $i) + (($g_iArmy_OnT_Troop_Slot_Width - $g_iArmy_ImageSizeForScan) / 2)), $g_aiArmyOnBrewSlot[1], Int($g_aiArmyOnBrewSlot[0] + ($g_iArmy_OnT_Troop_Slot_Width* $i) + (($g_iArmy_OnT_Troop_Slot_Width- $g_iArmy_ImageSizeForScan) / 2) + $g_iArmy_ImageSizeForScan), $g_aiArmyOnBrewSlot[3]))
-
 			Local $result = findMultiImage(Eval("g_hHBitmap_OB_Slot" & $i + 1), $sDirectory ,"FV" ,"FV", 0, 1000, 1 , $returnProps)
 
 			Local $sObjectname = ""
@@ -135,6 +135,18 @@ Func CheckOnBrewUnit($hHBitmap)
 				$aiSpellInfo[$i][3] = $bIsQueueSpell
 				If $bIsQueueSpell Then
 					Assign("OnQ" & $sObjectname & "Spell", Eval("OnQ" & $sObjectname & "Spell") + $iQty)
+
+					Local $hHbitmap_ready = GetHHBitmapArea($hHBitmap, Int(112 + ($g_iArmy_OnT_Troop_Slot_Width * $i)), 240, Int(112 + ($g_iArmy_OnT_Troop_Slot_Width* $i) + 12), 248)
+					_debugSaveHBitmapToImage($hHbitmap_ready, "hHbitmap_ready" & $i + 1, True)
+
+					$sDirectory = $g_sSamM0dImageLocation & "\Troops\Ready\"
+
+					$result = findMultiImage($hHbitmap_ready, $sDirectory ,"FV" ,"FV", 0, 1000, 1 , $returnProps)
+
+					If IsArray($result) then
+						Assign("Ready" & $sObjectname & "Spell", Eval("Ready" & $sObjectname & "Spell") + $iQty)
+					EndIf
+
 				Else
 					Assign("OnT" & $sObjectname & "Spell", Eval("OnT" & $sObjectname & "Spell") + $iQty)
 				EndIf

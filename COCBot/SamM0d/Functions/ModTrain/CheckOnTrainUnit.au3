@@ -25,6 +25,7 @@ Func CheckOnTrainUnit($hHBitmap)
 	For $i = 0 To UBound($MyTroops) - 1
 		Assign("OnT" & $MyTroops[$i][0], 0)
 		Assign("OnQ" & $MyTroops[$i][0], 0)
+		Assign("Ready" & $MyTroops[$i][0], 0)
 		Assign("RemoveUnitOfOnT" & $MyTroops[$i][0], 0)
 		Assign("RemoveUnitOfOnQ" & $MyTroops[$i][0], 0)
 	Next
@@ -67,6 +68,7 @@ Func CheckOnTrainUnit($hHBitmap)
 		Else
 			Local $bIsQueueTroop = False
 			Local $bContinueNextLoop = False
+
 			; if color check is pink at the troop header that mean pre train unit
 			If _ColorCheck(_GetPixelColor(Int($g_aiArmyOnTrainSlot[0] + ($g_iArmy_OnT_Troop_Slot_Width * $i) + ($g_iArmy_OnT_Troop_Slot_Width / 2)),186,False), Hex(0XD7AFA9, 6), 10) Then
 				$sDirectory = $g_sSamM0dImageLocation & "\Troops\Queue\"
@@ -140,12 +142,24 @@ Func CheckOnTrainUnit($hHBitmap)
 			EndIf
 
 			If $iQty <> 0 And $sObjectname <> "" Then
+
 				$aiTroopInfo[$i][0] = $sObjectname
 				$aiTroopInfo[$i][1] = $iQty
 				$aiTroopInfo[$i][2] = $i + 1
 				$aiTroopInfo[$i][3] = $bIsQueueTroop
 				If $bIsQueueTroop Then
 					Assign("OnQ" & $sObjectname, Eval("OnQ" & $sObjectname) + $iQty)
+
+					Local $hHbitmap_ready = GetHHBitmapArea($hHBitmap, Int(112 + ($g_iArmy_OnT_Troop_Slot_Width * $i)), 240, Int(112 + ($g_iArmy_OnT_Troop_Slot_Width* $i) + 12), 248)
+					_debugSaveHBitmapToImage($hHbitmap_ready, "hHbitmap_ready" & $i + 1, True)
+
+					$sDirectory = $g_sSamM0dImageLocation & "\Troops\Ready\"
+					$result = findMultiImage($hHbitmap_ready, $sDirectory ,"FV" ,"FV", 0, 1000, 1 , $returnProps)
+
+					If IsArray($result) then
+						Assign("Ready" & $sObjectname, Eval("Ready" & $sObjectname) + $iQty)
+					EndIf
+
 				Else
 					Assign("OnT" & $sObjectname, Eval("OnT" & $sObjectname) + $iQty)
 				EndIf

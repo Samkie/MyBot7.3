@@ -109,6 +109,7 @@ CSV/THsnipe/[Tt]est*.csv
 !COCBot/SamM0d/[Ii]mages/Troops/Queue/*.*
 !COCBot/SamM0d/[Ii]mages/Troops/Train/*.*
 !COCBot/SamM0d/[Ii]mages/Troops/CC/*.*
+!COCBot/SamM0d/[Ii]mages/Troops/Ready/*.*
 !COCBot/SamM0d/[Ii]mages/Spells/*.*
 !COCBot/SamM0d/[Ii]mages/Spells/Brew/*.*
 !COCBot/SamM0d/[Ii]mages/Spells/Queue/*.*

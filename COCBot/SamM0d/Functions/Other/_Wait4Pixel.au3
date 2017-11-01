@@ -11,6 +11,18 @@ Func _Wait4Pixel($x, $y, $sColor, $iColorVariation, $iWait = 1000, $iDelay = 100
 	Return False
 EndFunc
 
+Func _Wait4PixelGone($x, $y, $sColor, $iColorVariation, $iWait = 1000, $iDelay = 100, $sMsglog = Default)
+	Local $hTimer = __TimerInit()
+	Local $iMaxCount = Int($iWait / $iDelay)
+	For $i = 1 To $iMaxCount
+		ForceCaptureRegion()
+		If Not _CheckColorPixel($x, $y, $sColor, $iColorVariation, True, $sMsglog) Then Return True
+		If _Sleep($iDelay) Then Return False
+		If __TimerDiff($hTimer) >= $iWait Then ExitLoop
+	Next
+	Return False
+EndFunc
+
 Func _CheckColorPixel($x, $y, $sColor, $iColorVariation, $bFCapture = True, $sMsglog = Default)
 	Local $hPixelColor = _GetPixelColor2($x, $y, $bFCapture)
 	Local $bFound = _ColorCheck($hPixelColor, Hex($sColor,6), Int($iColorVariation))

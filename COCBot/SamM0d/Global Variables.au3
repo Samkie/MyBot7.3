@@ -277,7 +277,11 @@ Global $ichkSwitchDonTypeOnlyWhenAtkTypeNotReady = False
 Global $bAvoidSwitch = False
 ;Global $bNowWaitingConfirm = False
 
+; use Event troop
 Global $ichkEnableUseEventTroop, $chkEnableUseEventTroop
+
+; donate only when troop pre train ready
+Global $ichkEnableDonateWhenReady, $chkEnableDonateWhenReady
 
 Global $aSwitchList[1][8]
 

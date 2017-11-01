@@ -835,6 +835,11 @@ $txtLimitDonateUnit = GUICtrlCreateInput("8", $x + 300, $y+2, 35, 20, BitOR($GUI
 	GUICtrlSetOnEvent(-1, "txtLimitDonateUnit")
 
 $y += 25
+$chkEnableDonateWhenReady = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "DonateReady", "Donate pre-train troops or pre-brew spells only"), $x+10, $y, -1, -1)
+;_GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "DonateReadyTips", "Donate when pre-train troops or pre-brew spells are full ready. If you train 8 giants mean need total 16 giants to trigger donate."))
+	GUICtrlSetOnEvent(-1, "chkEnableDonateWhenReady")
+
+$y += 25
 $chkEnableLogoutLimit = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "LogoutLimit", "Maximum logout time for smart wait for train, second(s): "), $x+10, $y, -1, -1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("sam m0d", "LogoutLimitTips", "Maximum logout time for smart wait for train, prevent attack by other player."))
 	GUICtrlSetOnEvent(-1, "chkEnableLogoutLimit")

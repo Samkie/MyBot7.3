@@ -582,6 +582,10 @@ Func chkEnableUseEventTroop()
 	$ichkEnableUseEventTroop = (GUICtrlRead($chkEnableUseEventTroop) = $GUI_CHECKED ? 1 : 0)
 EndFunc
 
+Func chkEnableDonateWhenReady()
+	$ichkEnableDonateWhenReady = (GUICtrlRead($chkEnableDonateWhenReady) = $GUI_CHECKED ? 1 : 0)
+EndFunc
+
 ;~ Func chkRemoveSpecialObstacleBB()
 ;~ 	If GUICtrlRead($chkRemoveSpecialObstacleBB) = $GUI_CHECKED Then
 ;~ 		$ichkRemoveSpecialObstacleBB = 1

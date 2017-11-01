@@ -923,6 +923,9 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 							$tempDisableTrain = False
 							$iDonatedUnit += 1
 
+							If $ichkEnableDonateWhenReady = 1 Then
+								Assign("Ready" & $g_asTroopShortNames[$iTroopIndex], Eval("Ready" & $g_asTroopShortNames[$iTroopIndex]) - 1)
+							EndIf
 							If _Sleep(1000) Then Return
 							$icount += 1
 						EndIf
@@ -946,6 +949,9 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 						$iDonatedUnit += $Quant
 						$bJustMakeDonate = True
 						$tempDisableTrain = False
+						If $ichkEnableDonateWhenReady = 1 Then
+							Assign("Ready" & $g_asTroopShortNames[$iTroopIndex], Eval("Ready" & $g_asTroopShortNames[$iTroopIndex]) - $Quant)
+						EndIf
 					EndIf
 				EndIf
 
@@ -995,6 +1001,9 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 							$tempDisableTrain = False
 							$iDonatedUnit += 1
 
+							If $ichkEnableDonateWhenReady = 1 Then
+								Assign("Ready" & $g_asTroopShortNames[$iTroopIndex], Eval("Ready" & $g_asTroopShortNames[$iTroopIndex]) - 1)
+							EndIf
 							If _Sleep(1000) Then Return
 						EndIf
 					Next
@@ -1015,6 +1024,9 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 						$bJustMakeDonate = True
 						$tempDisableTrain = False
 						$iDonatedUnit += $g_iDonTroopsQuantity
+						If $ichkEnableDonateWhenReady = 1 Then
+							Assign("Ready" & $g_asTroopShortNames[$iTroopIndex], Eval("Ready" & $g_asTroopShortNames[$iTroopIndex]) - $g_iDonTroopsQuantity)
+						EndIf
 					EndIf
 				EndIf
 
@@ -1138,6 +1150,11 @@ Func DonateSpellType(Const $iSpellIndex, $Quant = 0, Const $Custom = False, Cons
 			$tempDisableBrewSpell = False
 			; DonatedSpell($iSpellIndex, $g_iDonSpellsQuantity)
 			$g_aiDonateStatsSpells[$iSpellIndex][0] += $g_iDonSpellsQuantity
+
+			If $ichkEnableDonateWhenReady = 1 Then
+				Assign("Ready" & $g_asSpellShortNames[$iSpellIndex] & "Spell", Eval("Ready" & $g_asSpellShortNames[$iSpellIndex] & "Spell") - $g_iDonSpellsQuantity)
+			EndIf
+
 		EndIf
 
 		; Assign the donated quantity Spells to train : $Don $g_asSpellName

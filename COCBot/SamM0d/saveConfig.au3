@@ -22,6 +22,9 @@ _Ini_Add("EnableUseEventTroop", "Enable", (GUICtrlRead($chkEnableUseEventTroop) 
 ; donate only when troop pre train ready
 _Ini_Add("EnableDonateWhenReady", "Enable", (GUICtrlRead($chkEnableDonateWhenReady) = $GUI_CHECKED ? 1 : 0 ))
 
+; stop bot when low battery
+_Ini_Add("EnableStopBotWhenLowBattery", "Enable", (GUICtrlRead($chkEnableStopBotWhenLowBattery) = $GUI_CHECKED ? 1 : 0 ))
+
 ;~ ; Pause Tray Tip
 ;~ _Ini_Add("DisablePauseTrayTip", "Enable", (GUICtrlRead($chkDisablePauseTrayTip) = $GUI_CHECKED ? 1 : 0 ))
 

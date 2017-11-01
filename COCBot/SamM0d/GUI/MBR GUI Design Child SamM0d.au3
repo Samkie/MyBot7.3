@@ -854,6 +854,11 @@ $chkEnableUseEventTroop = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", 
 	GUICtrlSetOnEvent(-1, "chkEnableUseEventTroop")
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
 
+$y += 25
+$chkEnableStopBotWhenLowBattery = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "Enable stop bot when battery level critical", "Enable stop bot when battery level critical"), $x+10, $y, -1, -1)
+	GUICtrlSetOnEvent(-1, "chkEnableStopBotWhenLowBattery")
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
+
 ;~ $y += 25
 ;~ $chkRemoveSpecialObstacleBB = GUICtrlCreateCheckbox(GetTranslatedFileIni("sam m0d", "Remove Special Obstacle BB", "Remove Special Obstacle at Builder Base"), $x+10, $y, -1, -1)
 ;~ 	GUICtrlSetOnEvent(-1, "chkRemoveSpecialObstacleBB")

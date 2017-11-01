@@ -586,6 +586,10 @@ Func chkEnableDonateWhenReady()
 	$ichkEnableDonateWhenReady = (GUICtrlRead($chkEnableDonateWhenReady) = $GUI_CHECKED ? 1 : 0)
 EndFunc
 
+Func chkEnableStopBotWhenLowBattery()
+	$ichkEnableStopBotWhenLowBattery = (GUICtrlRead($chkEnableStopBotWhenLowBattery) = $GUI_CHECKED ? 1 : 0)
+EndFunc
+
 ;~ Func chkRemoveSpecialObstacleBB()
 ;~ 	If GUICtrlRead($chkRemoveSpecialObstacleBB) = $GUI_CHECKED Then
 ;~ 		$ichkRemoveSpecialObstacleBB = 1
@@ -721,3 +725,19 @@ Func CheckZoomOut2($sSource = "CheckZoomOut", $bCheckOnly = False, $bForecCaptur
 	EndIf
 	Return True
 EndFunc   ;==>CheckZoomOut2
+
+Func _BatteryStatus()
+	If $ichkEnableStopBotWhenLowBattery = 1 And $g_bCheckBattery = True Then
+		Local $aData = _WinAPI_GetSystemPowerStatus()
+		If @error Then Return
+		If BitAND($aData[1], 0x8) Then
+			; On charging, just leave it
+		Else
+			If BitAND($aData[1], 0x4) Then
+				SetLog("Stopping Bot because your System is running on low battery!", $COLOR_WARNING)
+				CloseAndroid("GUIControl_WM_POWERBROADCAST")
+				BotStop()
+			EndIf
+		EndIf
+	EndIf
+EndFunc   ;==>_BatteryStatus

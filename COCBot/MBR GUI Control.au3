@@ -106,8 +106,6 @@ Func InitializeMainGUI($bGuiModeUpdate = False)
 	GUIRegisterMsg($WM_KILLFOCUS, "GUIControl_WM_FOCUS")
 	GUIRegisterMsg($WM_ACTIVATEAPP, "GUIControl_WM_ACTIVATEAPP")
 	GUIRegisterMsg($WM_MOVE, "GUIControl_WM_MOVE")
-	; samm0d
-	GUIRegisterMsg($WM_POWERBROADCAST, "GUIControl_WM_POWERBROADCAST")
 
 	GUIRegisterMsg(_WinAPI_RegisterWindowMessage('SHELLHOOK'), 'GUIControl_WM_SHELLHOOK')
 	_WinAPI_RegisterShellHookWindow($g_hFrmBot)
@@ -645,18 +643,6 @@ Func GUIControl_WM_MOVE($hWind, $iMsg, $wParam, $lParam)
 	SetCriticalMessageProcessing($wasCritical)
 	Return $GUI_RUNDEFMSG
 EndFunc   ;==>GUIControl_WM_MOVE
-
-; samm0d
-Func GUIControl_WM_POWERBROADCAST($hWnd, $Msg, $wParam, $lParam)
-    Switch $wParam
-		Case 0x0009 Or 0x000A ; Power is low
-			SetLog("Stopping Bot because your System is running on low battery!", $COLOR_WARNING)
-			CloseAndroid("GUIControl_WM_POWERBROADCAST")
-			BotStop()
-	EndSwitch
-
-    Return $GUI_RUNDEFMSG
-EndFunc
 
 Func GUIControl_WM_SYSCOMMAND($hWind, $iMsg, $wParam, $lParam)
 	Local $wasCritical = SetCriticalMessageProcessing(True)

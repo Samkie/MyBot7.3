@@ -283,6 +283,10 @@ Global $ichkEnableUseEventTroop, $chkEnableUseEventTroop
 ; donate only when troop pre train ready
 Global $ichkEnableDonateWhenReady, $chkEnableDonateWhenReady
 
+; stop bot when low battery
+Global $ichkEnableStopBotWhenLowBattery, $chkEnableStopBotWhenLowBattery
+Global $g_bCheckBattery = False
+
 Global $aSwitchList[1][8]
 
 Global $aProfileStats[44][9] = _

@@ -778,9 +778,6 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 		$g_iDonTroopsQuantity = $g_iDonTroopsQuantityAv
 	EndIf
 
-
-	SetLog("Eval Ready: " & Eval("Ready" & $g_asTroopShortNames[$iTroopIndex]))
-
 	If $ichkEnableDonateWhenReady = 1 Then
 		If $Custom = False Then
 			If Eval("Ready" & $g_asTroopShortNames[$iTroopIndex]) < $g_iDonTroopsQuantity Then

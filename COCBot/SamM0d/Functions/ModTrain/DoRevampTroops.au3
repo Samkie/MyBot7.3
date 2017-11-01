@@ -102,7 +102,7 @@ Func DoRevampTroops($bDoPreTrain = False)
 
 			For $i = 0 To UBound($tempTroops) - 1
 				Local $Troop4Add = Eval("Add" & $tempTroops[$i][0])
-				If $Troop4Add > 0 Then
+				If $Troop4Add > 0 And $iRemainTroopsCapacity > 0 Then
 
 					Local $fixRemain = 0
 

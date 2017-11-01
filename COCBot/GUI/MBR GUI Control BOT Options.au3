@@ -281,15 +281,15 @@ Func btnTestTrain()
     ModTrain()
 
 
-	For $i = 0 To UBound($MyTroops) - 1
-		SetLog("MyTroops[" & $MyTroops[$i][0] & "], Ready - " & Eval("Ready" & $MyTroops[$i][0]))
-	Next
+;~ 	For $i = 0 To UBound($MyTroops) - 1
+;~ 		SetLog("MyTroops[" & $MyTroops[$i][0] & "], Ready - " & Eval("Ready" & $MyTroops[$i][0]))
+;~ 	Next
 
-	For $i = 0 To UBound($MySpells) - 1
-		SetLog("MySpells[" & $MySpells[$i][0] & "], Ready - " & Eval("Ready" & $MySpells[$i][0] & "Spell"))
-	Next
+;~ 	For $i = 0 To UBound($MySpells) - 1
+;~ 		SetLog("MySpells[" & $MySpells[$i][0] & "], Ready - " & Eval("Ready" & $MySpells[$i][0] & "Spell"))
+;~ 	Next
 
-	DonateCC()
+;~ 	DonateCC()
 
 	SetLog("Elapsed: " & Round(__TimerDiff($hTimer) / 1000, 2))
 	SetLog("===END===")

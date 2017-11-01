@@ -103,7 +103,7 @@ Func DoRevampSpells($bDoPreTrain = False)
 
 			For $i = 0 To UBound($tempSpells) - 1
 				Local $tempSpell = Eval("Add" & $tempSpells[$i][0] & "Spell")
-				If $tempSpell > 0 Then
+				If $tempSpell > 0 And $iRemainSpellsCapacity > 0 Then
 
 					Local $iCost
 					; check train cost before click, incase use gem

@@ -1410,7 +1410,7 @@ Func Wait4Main($bBuilderBase = False)
 				ContinueLoop
 			EndIf
 			_CaptureRegion2Sync()
-			If _checkObstacles() Then $i = 0
+			If _checkObstacles($bBuilderBase) Then $i = 0
 		EndIf
 	Next
 	Return False

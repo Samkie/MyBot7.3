@@ -164,8 +164,8 @@ Func MyTrainClick($TroopButton, $iTimes = 1, $iSpeed = 0, $sdebugtxt="", $bIsBre
 				SetLog("Cannot find button: " & $TroopButton & " for click", $COLOR_ERROR)
 				Return False
 			EndIf
-			Return True
 		EndIf
+		Return True
 	Else
 		Return False
 	EndIf

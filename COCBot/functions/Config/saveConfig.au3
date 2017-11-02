@@ -129,6 +129,8 @@ Func SaveRegularConfig()
 	_Ini_Add("general", "threads", $g_iThreads)
 	_Ini_add("general", "botDesignFlags", $g_iBotDesignFlags)
 
+	; samm0d
+;~ 	If $ichkEnableMySwitch = 0 And $g_bRunState = False Then
 	; Window positions
 	_Ini_Add("general", "frmBotPosX", $g_iFrmBotPosX)
 	_Ini_Add("general", "frmBotPosY", $g_iFrmBotPosY)
@@ -138,6 +140,7 @@ Func SaveRegularConfig()
 	_Ini_Add("general", "AndroidPosY", $g_iAndroidPosY)
 	_Ini_Add("general", "frmBotDockedPosX", $g_iFrmBotDockedPosX)
 	_Ini_Add("general", "frmBotDockedPosY", $g_iFrmBotDockedPosY)
+;~ 	EndIf
 
 	; Redraw mode
 	_Ini_Add("general", "RedrawBotWindowMode", $g_iRedrawBotWindowMode)

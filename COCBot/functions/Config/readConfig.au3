@@ -137,6 +137,8 @@ Func ReadRegularConfig()
 	If $g_iThreads < 0 Then $g_iThreads = 0
 	IniReadS($g_iBotDesignFlags, $g_sProfileConfigPath, "general", "botDesignFlags", 0, "int") ; Default for existing profiles is 0, for new is 3
 
+	; samm0d
+	If $ichkEnableMySwitch = 0 And $g_bRunState = False Then
 	; Window positions
 	IniReadS($g_iFrmBotPosX, $g_sProfileConfigPath, "general", "frmBotPosX", -1, "int")
 	IniReadS($g_iFrmBotPosY, $g_sProfileConfigPath, "general", "frmBotPosY", -1, "int")
@@ -160,6 +162,7 @@ Func ReadRegularConfig()
 		; bot window was minimized, restore default position
 		$g_iFrmBotDockedPosX = -1
 		$g_iFrmBotDockedPosY = -1
+	EndIf
 	EndIf
 
 	; Redraw mode:  0 = disabled, 1 = Redraw always entire bot window, 2 = Redraw only required bot window area (or entire bot if control not specified)

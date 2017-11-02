@@ -733,7 +733,7 @@ Func _BatteryStatus()
 		If BitAND($aData[1], 0x8) Then
 			; On charging, just leave it
 		Else
-			If BitAND($aData[1], 0x4) Then
+			If $aData[2] < 10 Then
 				SetLog("Stopping Bot because your System is running on low battery!", $COLOR_WARNING)
 				CloseAndroid("GUIControl_WM_POWERBROADCAST")
 				BotStop()

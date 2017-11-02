@@ -14,8 +14,11 @@
 Global $aCenterEnemyVillageClickDrag = [65, 545] ; Scroll village using this location in the water
 Global $aCenterHomeVillageClickDrag = [160, 665] ; Scroll village using this location in the water
 Global $aIsReloadError[4] = [457, 301 + $g_iMidOffsetY, 0x33B5E5, 10] ; Pixel Search Check point For All Reload Button errors, except break ending
-Global $aIsMain[4] = [278, 9, 0x77BDE0, 20] ; Main Screen, Builder Info Icon
-Global $aIsMainGrayed[4] = [278, 9, 0x3C5F70, 15] ; Main Screen, Builder Info Icon grayed
+;Global $aIsMain[4] = [278, 9, 0x77BDE0, 20] ; Main Screen, Builder Info Icon
+;Global $aIsMainGrayed[4] = [278, 9, 0x3C5F70, 15] ; Main Screen, Builder Info Icon grayed
+; samm0d - change to Shield Info cause of builder info icon will got chance to block with chat windows.
+Global $aIsMain[4] = [431, 10, 0x75BDE4, 6] ; Main Screen, Shield Info ! icon
+Global $aIsMainGrayed[4] = [431, 10, 0x3B5F72, 6] ; Main Screen, Shield Info ! icon
 
 Global $aIsOnBuilderIsland[4] = [838, 18, 0xffff46, 10] ; Check the Gold Coin from resources , is a square not round
 

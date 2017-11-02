@@ -145,7 +145,8 @@ Global Const $aRtnHomeCheck2[4] = [497, 548 + $g_iMidOffsetY, 0x79C326, 20]
 Global Const $aSearchLimit[6] = [19, 565, 104, 580, 0xD9DDCF, 10] ; (kaganus) no idea what this is for
 
 ;inattackscreen
-Global Const $aIsAttackPage[4] = [70, 548 + $g_iBottomOffsetY, 0xC80000, 20] ; red button "end battle" 860x780
+; samm0d
+Global Const $aIsAttackPage[4] = [70, 548 + $g_iBottomOffsetY, 0xD10D0E, 20] ; red button "end battle" 860x780
 
 ;CheckImageType (Normal, Snow, etc)
 Global Const $aImageTypeN1[4] = [237, 161, 0xD5A849, 30] ; Sand on Forest Edge 'Lane' 860x780

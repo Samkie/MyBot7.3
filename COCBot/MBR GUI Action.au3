@@ -120,7 +120,7 @@ Func BotStart($bAutostartDelay = 0)
 		If $hWndActive = $g_hAndroidWindow And ($g_bAndroidBackgroundLaunched = True Or AndroidControlAvailable())  Then ; Really?
 			; samm0d
 			If $ichkEnableStopBotWhenLowBattery = 1 Then
-				AdlibRegister("_BatteryStatus", 5000)
+				AdlibRegister("_BatteryStatus", 10000)
 				$g_bCheckBattery = True
 				GUICtrlSetState($chkEnableStopBotWhenLowBattery, $GUI_DISABLE)
 			EndIf

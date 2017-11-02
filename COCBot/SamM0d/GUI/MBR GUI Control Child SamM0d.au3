@@ -733,9 +733,12 @@ Func _BatteryStatus()
 		If BitAND($aData[1], 0x8) Then
 			; On charging, just leave it
 		Else
-			If $aData[2] < 10 Then
-				SetLog("Stopping Bot because your System is running on low battery!", $COLOR_WARNING)
-				BotStop()
+			If $aData[2] <= 10 Then
+				If IsAttackPage() = False Then
+					SetLog("Stopping Bot because your System is running on low battery! Left: " & $aData[2] & "%", $COLOR_WARNING)
+					PoliteCloseCoC("_BatteryStatus", _CheckPixel($aIsMain, True))
+					BotStop()
+				EndIf
 			EndIf
 		EndIf
 	EndIf

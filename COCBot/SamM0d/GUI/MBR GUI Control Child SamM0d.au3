@@ -735,7 +735,6 @@ Func _BatteryStatus()
 		Else
 			If $aData[2] < 10 Then
 				SetLog("Stopping Bot because your System is running on low battery!", $COLOR_WARNING)
-				CloseAndroid("GUIControl_WM_POWERBROADCAST")
 				BotStop()
 			EndIf
 		EndIf

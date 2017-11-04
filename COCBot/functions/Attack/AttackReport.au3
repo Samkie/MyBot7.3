@@ -267,7 +267,7 @@ Func AttackReport()
 	$AtkLogTxt &= StringFormat("%6d", $g_iStatsBonusLast[$eLootGold]) & "|"
 	$AtkLogTxt &= StringFormat("%6d", $g_iStatsBonusLast[$eLootElixir]) & "|"
 	$AtkLogTxt &= StringFormat("%4d", $g_iStatsBonusLast[$eLootDarkElixir]) & "|"
-	$AtkLogTxt &= StringFormat("%4d", $g_asLeagueDetailsShort) & "|"
+	$AtkLogTxt &= $g_asLeagueDetailsShort & (StringLen($g_asLeagueDetailsShort) = 1 ? "   " : "  ") & "|"
 
 	; samm0d
 	If $ichkEnableMySwitch Then

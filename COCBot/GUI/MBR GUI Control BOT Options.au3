@@ -299,6 +299,7 @@ Func btnTestTrain()
 ;~ 		SetLog("MySpells[" & $MySpells[$i][0] & "], Ready - " & Eval("Ready" & $MySpells[$i][0] & "Spell"))
 ;~ 	Next
 
+;~ 	$iDonatedUnit = 0
 ;~ 	DonateCC()
 
 	SetLog("Elapsed: " & Round(__TimerDiff($hTimer) / 1000, 2))

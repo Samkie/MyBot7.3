@@ -649,17 +649,18 @@ EndFunc
 
 Func AttackNowLB()
 	Setlog("Begin Live Base Attack TEST")
-	$g_iMatchMode = $LB			; Select Live Base As Attack Type
-	$g_aiAttackAlgorithm[$LB] = 1			; Select Scripted Attack
-	$g_sAttackScrScriptName[$LB] = GuiCtrlRead($g_hCmbScriptNameAB)		; Select Scripted Attack File From The Combo Box, Cos it wasn't refreshing until pressing Start button
-	$g_bRunState = True
+	$g_iMatchMode = $LB
+	$g_aiAttackAlgorithm[$LB] = 1
+	$g_sAttackScrScriptName[$LB] = GuiCtrlRead($g_hCmbScriptNameAB)
 
-	ResetTHsearch()
+	Local $currentRunState = $g_bRunState
+	$g_bRunState = True
 
 	ForceCaptureRegion()
 	_CaptureRegion2()
 
-	If CheckZoomOut2("VillageSearch", True, False) = False Then
+	Setlog("Check ZoomOut...", $COLOR_INFO)
+	If CheckZoomOut2("VillageSearch", False, False) = False Then
 		$i = 0
 		Local $bMeasured
 		Do
@@ -667,31 +668,40 @@ Func AttackNowLB()
 			If _Sleep($DELAYPREPARESEARCH2) Then Return ; wait 500 ms
 			ForceCaptureRegion()
 			_CaptureRegion2()
-			$bMeasured = CheckZoomOut2("VillageSearch", $i < 2, False)
+			$bMeasured = CheckZoomOut2("VillageSearch", True, False)
 		Until $bMeasured = True Or $i >= 2
 		If $bMeasured = False Then Return ; exit func
 	EndIf
 
-	FindTownhall(True)
+	ResetTHsearch()
+	_ObjDeleteKey($g_oBldgAttackInfo, "")
 
-	PrepareAttack($g_iMatchMode)			; lol I think it's not needed for Scripted attack, But i just Used this to be sure of my code
-	Attack()			; Fire xD
+	PrepareAttack($g_iMatchMode)
+	Attack()
+	SetLog("Check Heroes Health and waiting battle for end.", $COLOR_INFO)
+	While IsAttackPage() And ($g_bCheckKingPower Or $g_bCheckQueenPower Or $g_bCheckWardenPower)
+		CheckHeroesHealth()
+		If _Sleep(500) Then Return
+	WEnd
+
 	Setlog("End Live Base Attack TEST")
-EndFunc   ;==>AttackNowLB
+	$g_bRunState = $currentRunState
+EndFunc ; ==>AttackNowLB
 
 Func AttackNowDB()
 	Setlog("Begin Dead Base Attack TEST")
-	$g_iMatchMode = $DB			; Select Dead Base As Attack Type
-	$g_aiAttackAlgorithm[$DB] = 1			; Select Scripted Attack
-	$g_sAttackScrScriptName[$DB] = GuiCtrlRead($g_hCmbScriptNameDB)		; Select Scripted Attack File From The Combo Box, Cos it wasn't refreshing until pressing Start button
-	$g_bRunState = True
+	$g_iMatchMode = $DB
+	$g_aiAttackAlgorithm[$DB] = 1
+	$g_sAttackScrScriptName[$DB] = GuiCtrlRead($g_hCmbScriptNameDB)
 
-	ResetTHsearch()
+	Local $currentRunState = $g_bRunState
+	$g_bRunState = True
 
 	ForceCaptureRegion()
 	_CaptureRegion2()
 
-	If CheckZoomOut2("VillageSearch", True, False) = False Then
+	Setlog("Check ZoomOut...", $COLOR_INFO)
+	If CheckZoomOut2("VillageSearch", False, False) = False Then
 		$i = 0
 		Local $bMeasured
 		Do
@@ -699,17 +709,26 @@ Func AttackNowDB()
 			If _Sleep($DELAYPREPARESEARCH2) Then Return ; wait 500 ms
 			ForceCaptureRegion()
 			_CaptureRegion2()
-			$bMeasured = CheckZoomOut2("VillageSearch", $i < 2, False)
+			$bMeasured = CheckZoomOut2("VillageSearch", True, False)
 		Until $bMeasured = True Or $i >= 2
 		If $bMeasured = False Then Return ; exit func
 	EndIf
 
+	ResetTHsearch()
+	_ObjDeleteKey($g_oBldgAttackInfo, "")
+
 	FindTownhall(True)
 
-	PrepareAttack($g_iMatchMode)			; lol I think it's not needed for Scripted attack, But i just Used this to be sure of my code
-	Attack()			; Fire xD
+	PrepareAttack($g_iMatchMode)
+	Attack()
+	SetLog("Check Heroes Health and waiting battle for end.", $COLOR_INFO)
+	While IsAttackPage() And ($g_bCheckKingPower Or $g_bCheckQueenPower Or $g_bCheckWardenPower)
+		CheckHeroesHealth()
+		If _Sleep(500) Then Return
+	WEnd
 	Setlog("End Dead Base Attack TEST")
-EndFunc   ;==>AttackNowLB
+	$g_bRunState = $currentRunState
+EndFunc ;==>AttackNowDB
 
 Func CheckZoomOut2($sSource = "CheckZoomOut", $bCheckOnly = False, $bForecCapture = True)
 	If $bForecCapture = True Then
@@ -719,7 +738,8 @@ Func CheckZoomOut2($sSource = "CheckZoomOut", $bCheckOnly = False, $bForecCaptur
 	If IsArray($aVillageResult) = 0 Or $aVillageResult[0] = "" Then
 		; not zoomed out, Return
 		If $bCheckOnly = False Then
-			SetLog("Not Zoomed Out! Exit TEST", $COLOR_ERROR)
+			SetLog("Not Zoomed Out!", $COLOR_ERROR)
+			ZoomOut()
 		EndIf
 		Return False
 	EndIf

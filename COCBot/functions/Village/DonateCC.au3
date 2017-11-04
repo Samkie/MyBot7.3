@@ -74,6 +74,15 @@ Func DonateCC($Check = False)
 		Return ; exit func if no planned donate checkmarks
 	EndIf
 
+	Local $y = 90
+
+	;check for new chats first
+	If $Check Then
+		If Not _ColorCheck(_GetPixelColor(26, 312 + $g_iMidOffsetY, True), Hex(0xf00810, 6), 20) And $g_iCommandStop <> 3 Then
+			Return ;exit if no new chats
+		EndIf
+	EndIf
+
 	; samm0d
 	If $ichkEnableDonateWhenReady = 1 Then
 		Dim $bGotUnitToDonate = False
@@ -96,22 +105,17 @@ Func DonateCC($Check = False)
 		EndIf
 	EndIf
 
-	Local $y = 90
-
-	;check for new chats first
-	If $Check Then
-		If Not _ColorCheck(_GetPixelColor(26, 312 + $g_iMidOffsetY, True), Hex(0xf00810, 6), 20) And $g_iCommandStop <> 3 Then
-			Return ;exit if no new chats
-		EndIf
-	EndIf
-
 	;Opens clan tab and verbose in log
 	ClickP($aAway, 1, 0, "#D01") ;Click Away
 	Setlog("Checking for Donate Requests in Clan Chat", $COLOR_INFO)
 
 	ForceCaptureRegion()
+	If Not _CheckPixel($aIsMain, $g_bCapturePixel) Then
+		SetLog("Not in coc main page, exit donate.", $color_RED)
+		Return
+	EndIf
 	If Not _CheckPixel($aChatTab, $g_bCapturePixel) Or Not _CheckPixel($aChatTab2, $g_bCapturePixel) Or Not _CheckPixel($aChatTab3, $g_bCapturePixel) Then ClickP($aOpenChat, 1, 0, "#0168") ; Clicks chat tab
-	If _Sleep($DELAYDONATECC4) Then Return
+	;If _Sleep($DELAYDONATECC4) Then Return
 
 	Local $iLoopCount = 0
 	While 1
@@ -134,6 +138,9 @@ Func DonateCC($Check = False)
 			SetLog("Clan Chat Did Not Open - Abandon Donate")
 			AndroidPageError("DonateCC")
 			Return
+		EndIf
+		If Mod($iLoopCount, 5) = 0 Then
+			If Not _CheckPixel($aChatTab, $g_bCapturePixel) Or Not _CheckPixel($aChatTab2, $g_bCapturePixel) Or Not _CheckPixel($aChatTab3, $g_bCapturePixel) Then ClickP($aOpenChat, 1, 0, "#0168") ; Clicks chat tab
 		EndIf
 		If _Sleep($DELAYDONATECC1) Then Return ; delay Allow 15x
 	WEnd
@@ -184,6 +191,10 @@ Func DonateCC($Check = False)
 
 		;If _Sleep($DELAYDONATECC2) Then ExitLoop
 		ForceCaptureRegion()
+		If _Wait4Pixel($aButtonClanWindowClose[4],$aButtonClanWindowClose[5],$aButtonClanWindowClose[6],$aButtonClanWindowClose[7],1000,100,"aButtonClanWindowClose") = False Then
+			SetLog("Close Chat button not found - Abandon Donate", $COLOR_RED)
+			ExitLoop
+		EndIf
 		$g_aiDonatePixel = _MultiPixelSearch(202, $y, 224, 660 + $g_iBottomOffsetY, 50, 1, Hex(0x98D057, 6), $aChatDonateBtnColors, 20)
 		If IsArray($g_aiDonatePixel) Then ; if Donate Button found
 			If $g_bDebugSetlog Then Setlog("$g_aiDonatePixel: (" & $g_aiDonatePixel[0] & "," & $g_aiDonatePixel[1] & ")", $COLOR_DEBUG)
@@ -220,7 +231,7 @@ Func DonateCC($Check = False)
 					Else
 						$ClanString &= " " & getChatString(30, $g_aiDonatePixel[1] - 23, "coc-latin-cyr")
 					EndIf
-					If _Sleep($DELAYDONATECC2) Then ExitLoop
+					If _Sleep($DELAYRESPOND) Then ExitLoop
 				Else ; default
 					; Chat Request using "coc-latinA" xml: only Latin derived alphabets / three paragraphs
 					Setlog("Using OCR to read Latin derived alphabets..", $COLOR_ACTION)
@@ -236,7 +247,7 @@ Func DonateCC($Check = False)
 					Else
 						$ClanString &= " " & getChatString(30, $g_aiDonatePixel[1] - 23, "coc-latinA")
 					EndIf
-					If _Sleep($DELAYDONATECC2) Then ExitLoop
+					If _Sleep($DELAYRESPOND) Then ExitLoop
 				EndIf
 				; Chat Request using IMGLOC: Chinese alphabet / one paragraph
 				If $g_bChkExtraChinese Then
@@ -246,7 +257,7 @@ Func DonateCC($Check = False)
 					Else
 						$ClanString &= " " & getChatStringChinese(30, $g_aiDonatePixel[1] - 24)
 					EndIf
-					If _Sleep($DELAYDONATECC2) Then ExitLoop
+					If _Sleep($DELAYRESPOND) Then ExitLoop
 				EndIf
 				; Chat Request using IMGLOC: Korean alphabet / one paragraph
 				If $g_bChkExtraKorean Then
@@ -256,7 +267,7 @@ Func DonateCC($Check = False)
 					Else
 						$ClanString &= " " & getChatStringKorean(30, $g_aiDonatePixel[1] - 24)
 					EndIf
-					If _Sleep($DELAYDONATECC2) Then ExitLoop
+					If _Sleep($DELAYRESPOND) Then ExitLoop
 				EndIf
 				; Chat Request using IMGLOC: Persian alphabet / one paragraph
 				If $g_bChkExtraPersian Then
@@ -266,7 +277,7 @@ Func DonateCC($Check = False)
 					Else
 						$ClanString &= " " & getChatStringPersian(30, $g_aiDonatePixel[1] - 31)
 					EndIf
-					If _Sleep($DELAYDONATECC2) Then ExitLoop
+					If _Sleep($DELAYRESPOND) Then ExitLoop
 				EndIf
 				; samm0d
 				If $ichkEnableCustomOCR4CCRequest = 1 Then
@@ -276,6 +287,7 @@ Func DonateCC($Check = False)
 					Else
 						$ClanString &= " " & getMyOcr(0,30, $g_aiDonatePixel[1] - 24,160,14,"ccrequest",False,True)
 					EndIf
+					If _Sleep($DELAYRESPOND) Then ExitLoop
 				EndIf
 
 				If $ClanString = "" Or $ClanString = " " Then
@@ -337,7 +349,7 @@ Func DonateCC($Check = False)
 
 			; ==== samm0d
 			; compare
-			If $bDonateTroop = 1 And $g_bSkipDonTroops = False Then
+			If $bDonateTroop And $g_bSkipDonTroops = False Then
 				For $i = 0 To UBound($g_aiDonateTroopPriority) - 1
 					Local $iTroopIndex = $g_aiDonateTroopPriority[$i]
 					If $g_abChkDonateTroop[$iTroopIndex] Then
@@ -397,7 +409,7 @@ Func DonateCC($Check = False)
 				EndIf
 			EndIf
 
-			If $bDonateSpell = 1 And Not $g_bSkipDonSpells Then
+			If $bDonateSpell And Not $g_bSkipDonSpells Then
 				If $g_bDebugSetlog Then Setlog("Spell checkpoint.", $COLOR_DEBUG)
 				For $i = 0 To UBound($g_aiDonateSpellPriority) - 1
 					Local $iSpellIndex = $g_aiDonateSpellPriority[$i]
@@ -411,7 +423,7 @@ Func DonateCC($Check = False)
 			If $bDonateFlag Then
 				If $bDonateTroop Or $bDonateSpell Then
 					; open Donate Window
-					If _Sleep(1000) Then Return
+					;If _Sleep(1000) Then Return
 					If ($g_bSkipDonTroops And $g_bSkipDonSpells) Or Not DonateWindow($bOpen) Then
 						$bDonate = True
 						$y = $g_aiDonatePixel[1] + 50
@@ -429,16 +441,12 @@ Func DonateCC($Check = False)
 						$bDonate = True
 						$y = $g_aiDonatePixel[1] + 50
 						;If _Sleep($DELAYDONATECC2) Then ExitLoop
-						If _Wait4Pixel($aButtonClanWindowClose[4],$aButtonClanWindowClose[5],$aButtonClanWindowClose[6],$aButtonClanWindowClose[7],1000,100,"aButtonClanWindowClose") = False Then
-							SetLog("Close Chat button not found - Abandon Donate", $COLOR_RED)
-							ExitLoop
-						EndIf
 						ContinueLoop ; go to next button if already donated, maybe this is an impossible case..
 					EndIf
 
 					If $g_bDebugSetlog Then Setlog("Troop checkpoint.", $COLOR_DEBUG)
 
-					If $bDonateTroop = 1 And $g_bSkipDonTroops = False Then
+					If $bDonateTroop And $g_bSkipDonTroops = False Then
 						;;; Custom Combination Donate by ChiefM3, edited by MonkeyHunter
 						If $canDonCustomA Then
 							For $i = 0 To 2
@@ -493,7 +501,7 @@ Func DonateCC($Check = False)
 					EndIf
 
 					If $g_bDebugSetlog Then Setlog("Spell checkpoint.", $COLOR_DEBUG)
-					If $bDonateSpell = 1 And Not $g_bSkipDonSpells Then
+					If $bDonateSpell And Not $g_bSkipDonSpells Then
 						For $i = 0 To UBound($g_aiDonateSpellPriority) - 1
 							Local $iSpellIndex = $g_aiDonateSpellPriority[$i]
 							If Eval("canDon" & $g_asSpellNames[$iSpellIndex]) = True Then
@@ -504,7 +512,7 @@ Func DonateCC($Check = False)
 				EndIf
 
 			Else
-				If $donateCCfilter And (($bDonateTroop = 1 And $g_bSkipDonTroops = False) Or ($bDonateSpell = 1 And $g_bSkipDonSpells = False)) Then
+				If $donateCCfilter And (($bDonateTroop And $g_bSkipDonTroops = False) Or ($bDonateSpell And $g_bSkipDonSpells = False)) Then
 					SetLog("Skip: Keyword or space not match with this request.",$COLOR_RED)
 				EndIf
 			EndIf
@@ -514,7 +522,7 @@ Func DonateCC($Check = False)
 				$g_bDonateAllRespectBlk = True
 				If $bDonateWindowOpen = False Then
 					; open Donate Window
-					If _Sleep(1000) Then Return
+					;If _Sleep(1000) Then Return
 					If ($g_bSkipDonTroops And $g_bSkipDonSpells) Or Not DonateWindow($bOpen) Then
 						$bDonate = True
 						$y = $g_aiDonatePixel[1] + 50
@@ -531,10 +539,6 @@ Func DonateCC($Check = False)
 					$bDonateWindowOpen = False
 					$bDonate = True
 					$y = $g_aiDonatePixel[1] + 50
-					If _Wait4Pixel($aButtonClanWindowClose[4],$aButtonClanWindowClose[5],$aButtonClanWindowClose[6],$aButtonClanWindowClose[7],1000,100,"aButtonClanWindowClose") = False Then
-						SetLog("Close Chat button not found - Abandon Donate", $COLOR_RED)
-						ExitLoop
-					EndIf
 					;If _Sleep($DELAYDONATECC2) Then ExitLoop
 					ContinueLoop ; go to next button if already donated, maybe this is an impossible case..
 				EndIf
@@ -553,10 +557,6 @@ Func DonateCC($Check = False)
 									$bDonate = True
 									$y = $g_aiDonatePixel[1] + 50
 									;If _Sleep($DELAYDONATECC2) Then ExitLoop
-									If _Wait4Pixel($aButtonClanWindowClose[4],$aButtonClanWindowClose[5],$aButtonClanWindowClose[6],$aButtonClanWindowClose[7],1000,100,"aButtonClanWindowClose") = False Then
-										SetLog("Close Chat button not found - Abandon Donate", $COLOR_RED)
-										ExitLoop
-									EndIf
 									ContinueLoop ; If "Nothing" is selected then continue
 								EndIf
 								If $g_aiDonateCustomTrpNumA[$i][1] < 1 Then
@@ -564,10 +564,6 @@ Func DonateCC($Check = False)
 									$bDonate = True
 									$y = $g_aiDonatePixel[1] + 50
 									;If _Sleep($DELAYDONATECC2) Then ExitLoop
-									If _Wait4Pixel($aButtonClanWindowClose[4],$aButtonClanWindowClose[5],$aButtonClanWindowClose[6],$aButtonClanWindowClose[7],1000,100,"aButtonClanWindowClose") = False Then
-										SetLog("Close Chat button not found - Abandon Donate", $COLOR_RED)
-										ExitLoop
-									EndIf
 									ContinueLoop ; If donate number is smaller than 1 then continue
 								ElseIf $g_aiDonateCustomTrpNumA[$i][1] > 8 Then
 									$g_aiDonateCustomTrpNumA[$i][1] = 8 ; Number larger than 8 is unnecessary
@@ -584,10 +580,6 @@ Func DonateCC($Check = False)
 									$bDonate = True
 									$y = $g_aiDonatePixel[1] + 50
 									;If _Sleep($DELAYDONATECC2) Then ExitLoop
-									If _Wait4Pixel($aButtonClanWindowClose[4],$aButtonClanWindowClose[5],$aButtonClanWindowClose[6],$aButtonClanWindowClose[7],1000,100,"aButtonClanWindowClose") = False Then
-										SetLog("Close Chat button not found - Abandon Donate", $COLOR_RED)
-										ExitLoop
-									EndIf
 									ContinueLoop ; If "Nothing" is selected then continue
 								EndIf
 								If $g_aiDonateCustomTrpNumB[$i][1] < 1 Then
@@ -595,10 +587,6 @@ Func DonateCC($Check = False)
 									$bDonate = True
 									$y = $g_aiDonatePixel[1] + 50
 									;If _Sleep($DELAYDONATECC2) Then ExitLoop
-									If _Wait4Pixel($aButtonClanWindowClose[4],$aButtonClanWindowClose[5],$aButtonClanWindowClose[6],$aButtonClanWindowClose[7],1000,100,"aButtonClanWindowClose") = False Then
-										SetLog("Close Chat button not found - Abandon Donate", $COLOR_RED)
-										ExitLoop
-									EndIf
 									ContinueLoop ; If donate number is smaller than 1 then continue
 								ElseIf $g_aiDonateCustomTrpNumB[$i][1] > 8 Then
 									$g_aiDonateCustomTrpNumB[$i][1] = 8 ; Number larger than 8 is unnecessary
@@ -616,6 +604,7 @@ Func DonateCC($Check = False)
 									ExitLoop
 								EndIf
 							Next
+
 					EndSelect
 				EndIf
 
@@ -641,14 +630,15 @@ Func DonateCC($Check = False)
 			$bDonate = True
 			$y = $g_aiDonatePixel[1] + 50
 			ClickP($aAway, 1, 0, "#D02")
-			If _Wait4Pixel($aButtonClanWindowClose[4],$aButtonClanWindowClose[5],$aButtonClanWindowClose[6],$aButtonClanWindowClose[7],1000,100,"aButtonClanWindowClose") = False Then
-				SetLog("Close Chat button not found - Abandon Donate", $COLOR_RED)
-				ExitLoop
-			EndIf
 			;If _Sleep($DELAYDONATECC2) Then ExitLoop
 		EndIf
 		;ck for more donate buttons
 		ForceCaptureRegion()
+		If _Wait4Pixel($aButtonClanWindowClose[4],$aButtonClanWindowClose[5],$aButtonClanWindowClose[6],$aButtonClanWindowClose[7],1000,100,"aButtonClanWindowClose") = False Then
+			SetLog("Close Chat button not found - Abandon Donate", $COLOR_RED)
+			ExitLoop
+		EndIf
+
 		$g_aiDonatePixel = _MultiPixelSearch(202, $y, 224, 660 + $g_iBottomOffsetY, 50, 1, Hex(0x98D057, 6), $aChatDonateBtnColors, 20)
 		If IsArray($g_aiDonatePixel) Then
 			If $g_bDebugSetlog Then Setlog("More Donate buttons found, new $g_aiDonatePixel: (" & $g_aiDonatePixel[0] & "," & $g_aiDonatePixel[1] & ")", $COLOR_DEBUG)
@@ -659,9 +649,7 @@ Func DonateCC($Check = False)
 		; Scroll Down
 
 		ForceCaptureRegion()
-
 		$Scroll = _PixelSearch(293, 687 - 30, 295, 693 - 30, Hex(0xFFFFFF, 6), 20)
-
 
 		If IsArray($Scroll) Then
 			$bDonate = True
@@ -696,8 +684,7 @@ Func DonateCC($Check = False)
 	WEnd
 
 	UpdateStats()
-
-	If _Sleep($DELAYDONATECC2) Then Return
+;	If _Sleep($DELAYDONATECC2) Then Return
 
 EndFunc   ;==>DonateCC
 
@@ -710,7 +697,6 @@ Func CheckDonate(Const $iTroopIndex, Const $sDonateTroopString, Const $sBlacklis
 	EndIf
 
 	; samm0d
-
 	Local $bKeywordFound = False
 
 	Local $asSplitDonate = StringSplit($sDonateTroopString, @CRLF, $STR_ENTIRESPLIT)
@@ -772,7 +758,6 @@ Func CheckDonate(Const $iTroopIndex, Const $sDonateTroopString, Const $sBlacklis
 				Return
 			EndIf
 		EndIf
-
 		If $ichkEnableDonateWhenReady = 1 Then
 			If $iTroopIndex <> 99 Then
 				If  $bTroop Then
@@ -788,7 +773,6 @@ Func CheckDonate(Const $iTroopIndex, Const $sDonateTroopString, Const $sBlacklis
 				EndIf
 			EndIf
 		EndIf
-
 		Return $bKeywordFound
 	Else
 		If $g_bDebugSetlog Then Setlog("Keyword for " & $sName & " not found.", $COLOR_DEBUG)
@@ -903,7 +887,7 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 				debugimagesave("LiveDonateCC-r" & $donaterow & "-c" & $donateposinrow & "-" & $g_asTroopNames[$iTroopIndex] & "_")
 			EndIf
 
-			If Not $g_bDebugOCRdonate Then
+			;If $g_bDebugOCRdonate = False Then
 				; Use slow click when the Train system is Quicktrain
 				If $g_bQuickTrainEnable Then
 					Local $icount = 0
@@ -913,7 +897,7 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 								_ColorCheck(_GetPixelColor(355 + ($Slot * 68), $g_iDonationWindowY + 106 + $YComp, True), Hex(0x306ca8, 6), 20) Or _
 								_ColorCheck(_GetPixelColor(360 + ($Slot * 68), $g_iDonationWindowY + 107 + $YComp, True), Hex(0x306ca8, 6), 20) Then ; check for 'blue'
 
-							Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, 1, $DELAYDONATECC3, "#0175")
+							If $g_bDebugOCRdonate = False Then Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, 1, $DELAYDONATECC3, "#0175")
 							If $g_iCommandStop = 3 Then
 								$g_iCommandStop = 0
 								$g_bFullArmy = False
@@ -926,6 +910,7 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 							If $ichkEnableDonateWhenReady = 1 Then
 								Assign("Ready" & $g_asTroopShortNames[$iTroopIndex], Eval("Ready" & $g_asTroopShortNames[$iTroopIndex]) - 1)
 							EndIf
+
 							If _Sleep(1000) Then Return
 							$icount += 1
 						EndIf
@@ -938,7 +923,7 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 							_ColorCheck(_GetPixelColor(355 + ($Slot * 68), $g_iDonationWindowY + 106 + $YComp, True), Hex(0x306ca8, 6), 20) Or _
 							_ColorCheck(_GetPixelColor(360 + ($Slot * 68), $g_iDonationWindowY + 107 + $YComp, True), Hex(0x306ca8, 6), 20) Then ; check for 'blue'
 
-						Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, $Quant, $DELAYDONATECC3, "#0175")
+						If $g_bDebugOCRdonate = False Then Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, $Quant, $DELAYDONATECC3, "#0175")
 						$g_aiDonateStatsTroops[$iTroopIndex][0] += $Quant
 
 						If $g_iCommandStop = 3 Then
@@ -964,17 +949,17 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 						$g_bSkipDonTroops = True
 					EndIf
 				EndIf
-			EndIf
+			;EndIf
 
 		Else
 			If $g_bDebugOCRdonate Then
-				Setlog("donate", $COLOR_RED)
-				Setlog("row: " & $donaterow, $COLOR_RED)
-				Setlog("pos in row: " & $donateposinrow, $COLOR_RED)
-				setlog("coordinate: " & 365 + ($Slot * 68) & "," & $g_iDonationWindowY + 100 + $YComp, $COLOR_RED)
+				Setlog("donate", $color_RED)
+				Setlog("row: " & $donaterow, $color_RED)
+				Setlog("pos in row: " & $donateposinrow, $color_red)
+				setlog("coordinate: " & 365 + ($Slot * 68) & "," & $g_iDonationWindowY + 100 + $YComp, $color_red)
 				debugimagesave("LiveDonateCC-r" & $donaterow & "-c" & $donateposinrow & "-" & $g_asTroopNames[$iTroopIndex] & "_")
 			EndIf
-			If Not $g_bDebugOCRdonate Then
+;~ 			If $g_bDebugOCRdonate = False Then
 				; Use slow click when the Train system is Quicktrain
 				; samm0d
 				If $ichkEnableLimitDonateUnit Then
@@ -990,7 +975,7 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 								_ColorCheck(_GetPixelColor(355 + ($Slot * 68), $g_iDonationWindowY + 106 + $YComp, True), Hex(0x306ca8, 6), 20) Or _
 								_ColorCheck(_GetPixelColor(360 + ($Slot * 68), $g_iDonationWindowY + 107 + $YComp, True), Hex(0x306ca8, 6), 20) Then ; check for 'blue'
 
-							Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, 1, $DELAYDONATECC3, "#0175")
+							If $g_bDebugOCRdonate = False Then Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, 1, $DELAYDONATECC3, "#0175")
 							$icount += 1
 							If $g_iCommandStop = 3 Then
 								$g_iCommandStop = 0
@@ -1000,7 +985,6 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 							$bJustMakeDonate = True
 							$tempDisableTrain = False
 							$iDonatedUnit += 1
-
 							If $ichkEnableDonateWhenReady = 1 Then
 								Assign("Ready" & $g_asTroopShortNames[$iTroopIndex], Eval("Ready" & $g_asTroopShortNames[$iTroopIndex]) - 1)
 							EndIf
@@ -1014,7 +998,7 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 							_ColorCheck(_GetPixelColor(355 + ($Slot * 68), $g_iDonationWindowY + 106 + $YComp, True), Hex(0x306ca8, 6), 20) Or _
 							_ColorCheck(_GetPixelColor(360 + ($Slot * 68), $g_iDonationWindowY + 107 + $YComp, True), Hex(0x306ca8, 6), 20) Then ; check for 'blue'
 
-						Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, $g_iDonTroopsQuantity, $DELAYDONATECC3, "#0175")
+						If $g_bDebugOCRdonate = False Then Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, $g_iDonTroopsQuantity, $DELAYDONATECC3, "#0175")
 						$g_aiDonateStatsTroops[$iTroopIndex][0] += $g_iDonTroopsQuantity
 						If $g_iCommandStop = 3 Then
 							$g_iCommandStop = 0
@@ -1044,7 +1028,7 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 					EndIf
 
 				EndIf
-			EndIf
+;~ 			EndIf
 		EndIf
 
 		; Assign the donated quantity troops to train : $Don $g_asTroopName
@@ -1134,8 +1118,8 @@ Func DonateSpellType(Const $iSpellIndex, $Quant = 0, Const $Custom = False, Cons
 			setlog("coordinate: " & 365 + ($Slot * 68) & "," & $g_iDonationWindowY + 100 + $YComp, $COLOR_ERROR)
 			debugimagesave("LiveDonateCC-r" & $donaterow & "-c" & $donateposinrow & "-" & $g_asSpellNames[$iSpellIndex] & "_")
 		EndIf
-		If Not $g_bDebugOCRdonate Then
-			Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, $g_iDonSpellsQuantity, $DELAYDONATECC3, "#0600")
+;~ 		If $g_bDebugOCRdonate = False Then
+			If $g_bDebugOCRdonate = False Then Click(365 + ($Slot * 68), $g_iDonationWindowY + 100 + $YComp, $g_iDonSpellsQuantity, $DELAYDONATECC3, "#0600")
 
 			$g_bFullArmySpells = False
 			$g_bFullArmy = False
@@ -1150,12 +1134,10 @@ Func DonateSpellType(Const $iSpellIndex, $Quant = 0, Const $Custom = False, Cons
 			$tempDisableBrewSpell = False
 			; DonatedSpell($iSpellIndex, $g_iDonSpellsQuantity)
 			$g_aiDonateStatsSpells[$iSpellIndex][0] += $g_iDonSpellsQuantity
-
 			If $ichkEnableDonateWhenReady = 1 Then
 				Assign("Ready" & $g_asSpellShortNames[$iSpellIndex] & "Spell", Eval("Ready" & $g_asSpellShortNames[$iSpellIndex] & "Spell") - $g_iDonSpellsQuantity)
 			EndIf
-
-		EndIf
+;~ 		EndIf
 
 		; Assign the donated quantity Spells to train : $Don $g_asSpellName
 		; need to implement assign $DonPoison etc later
@@ -1186,11 +1168,7 @@ Func DonateWindow($Open = True)
 
 	If $Open = False Then ; close window and exit
 		ClickP($aAway, 1, 0, "#D04")
-		; samm0d
-		If Not _Wait4PixelGone(409,$g_iDonationWindowY,0xFFFFFF,10,1000,100,"DonateWindowClose") Then
-			SetLog("Donate winow close failed.", $COLOR_RED)
-		EndIf
-		;If _Sleep($DELAYDONATEWINDOW1) Then Return
+		If _Sleep($DELAYDONATEWINDOW1) Then Return
 		If $g_bDebugSetlog Then Setlog("DonateWindow Close Exit", $COLOR_DEBUG)
 		Return
 	EndIf

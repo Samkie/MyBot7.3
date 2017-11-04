@@ -442,19 +442,23 @@ Func HMLClickAway(ByRef $x, ByRef $y, ByRef $MsgCode)
 	Else
 		ForceCaptureRegion()
 		_CaptureRegion()
-		For $i = 1 To 7
-			Local $tempButton = Eval("aButtonClose" & $i)
-			Local $sMsg = Default
-			If $EnableHMLSetLog = 1 Then $sMsg = "aButtonClose" & $i
-			If _CheckColorPixel($tempButton[4], $tempButton[5], $tempButton[6], $tempButton[7], $g_bCapturePixel, $sMsg) Then
-				$MsgCode = $tempButton[8]
-				Return HMLClickPR($tempButton,$x,$y)
-			EndIf
-		Next
-		; randomize some pixel area we usually aways click, like train page, League page and profile page close area
-		; even if the close button not exist, we use to Away
-		$MsgCode = "=-= Random Away Coordinate =-= " & $MsgCode
-		Return HMLClickPR($aButtonClose8,$x,$y)
+		If _CheckPixel($aIsMain) Or _CheckPixel($aIsMainGrayed) Or _CheckPixel($aIsOnBuilderIsland) Or _CheckPixel($aIsOnBuilderIslandGrayed) Then
+			For $i = 1 To 7
+				Local $tempButton = Eval("aButtonClose" & $i)
+				Local $sMsg = Default
+				If $EnableHMLSetLog = 1 Then $sMsg = "aButtonClose" & $i
+				If _CheckColorPixel($tempButton[4], $tempButton[5], $tempButton[6], $tempButton[7], $g_bNoCapturePixel, $sMsg) Then
+					$MsgCode = $tempButton[8]
+					Return HMLClickPR($tempButton,$x,$y)
+				EndIf
+			Next
+			; randomize some pixel area we usually aways click, like train page, League page and profile page close area
+			; even if the close button not exist, we use to Away
+			$MsgCode = "=-= Random Away Coordinate =-= " & $MsgCode
+			Return HMLClickPR($aButtonClose8,$x,$y)
+		Else
+			Return 0
+		EndIf
 	EndIf
 EndFunc
 

@@ -44,6 +44,7 @@ Func AttackReport()
 	Local $iTempOldStatsBonusLast[UBound($g_iStatsBonusLast)]
 	Local $iTempBonusLast, $iTempOldBonusLast
 	Local $iTempstarsearned, $iTempOldstarsearned
+	Local $starsearned
 	Local $bRedo = True
 	While $bRedo
 		$bRedo = False
@@ -110,7 +111,7 @@ Func AttackReport()
 			EndIf
 		EndIf
 		; check stars earned
-		Local $starsearned = 0
+		$starsearned = 0
 		If _ColorCheck(_GetPixelColor($aWonOneStarAtkRprt[0], $aWonOneStarAtkRprt[1], $g_bNoCapturePixel), Hex($aWonOneStarAtkRprt[2], 6), $aWonOneStarAtkRprt[3]) Then $starsearned += 1
 		If _ColorCheck(_GetPixelColor($aWonTwoStarAtkRprt[0], $aWonTwoStarAtkRprt[1], $g_bNoCapturePixel), Hex($aWonTwoStarAtkRprt[2], 6), $aWonTwoStarAtkRprt[3]) Then $starsearned += 1
 		If _ColorCheck(_GetPixelColor($aWonThreeStarAtkRprt[0], $aWonThreeStarAtkRprt[1], $g_bNoCapturePixel), Hex($aWonThreeStarAtkRprt[2], 6), $aWonThreeStarAtkRprt[3]) Then $starsearned += 1
@@ -240,7 +241,17 @@ Func AttackReport()
 
 
 	Local $AtkLogTxt
-	$AtkLogTxt = "" & _NowTime(4) & "|"
+	; samm0d
+	If $ichkEnableMySwitch Then
+		If $iCurActiveAcc <> - 1 Then
+			$AtkLogTxt = $iCurActiveAcc + 1 & "#"
+		Else
+			$AtkLogTxt = "  "
+		EndIf
+	Else
+		$AtkLogTxt = "  "
+	EndIf
+	$AtkLogTxt &= "|" & _NowTime(4) & "|"
 	$AtkLogTxt &= StringFormat("%5d", $g_aiCurrentLoot[$eLootTrophy]) & "|"
 	$AtkLogTxt &= StringFormat("%6d", $g_iSearchCount) & "|"
 	$AtkLogTxt &= StringFormat("%7d", $g_iStatsLastAttack[$eLootGold]) & "|"
@@ -251,18 +262,17 @@ Func AttackReport()
 	Else
 		$AtkLogTxt &= StringFormat("%7d", $g_iStatsLastAttack[$eLootDarkElixir]) & "|"
 	EndIf
-	$AtkLogTxt &= StringFormat("%7d", $g_iStatsLastAttack[$eLootDarkElixir]) & "|"
 	$AtkLogTxt &= StringFormat("%3d", $g_iStatsLastAttack[$eLootTrophy]) & "|"
-	$AtkLogTxt &= StringFormat("%1d", $starsearned) & "|"
+	$AtkLogTxt &= StringFormat("%2d", $starsearned) & "|"
 	$AtkLogTxt &= StringFormat("%6d", $g_iStatsBonusLast[$eLootGold]) & "|"
 	$AtkLogTxt &= StringFormat("%6d", $g_iStatsBonusLast[$eLootElixir]) & "|"
 	$AtkLogTxt &= StringFormat("%4d", $g_iStatsBonusLast[$eLootDarkElixir]) & "|"
-	$AtkLogTxt &= $g_asLeagueDetailsShort & "|"
+	$AtkLogTxt &= StringFormat("%4d", $g_asLeagueDetailsShort) & "|"
 
 	; samm0d
 	If $ichkEnableMySwitch Then
 		If $iCurActiveAcc <> - 1 Then
-			$AtkLogTxt &= " atk by " & $icmbWithProfile[$iCurActiveAcc]
+			$AtkLogTxt &= " " & $icmbWithProfile[$iCurActiveAcc]
 		EndIf
 	EndIf
 

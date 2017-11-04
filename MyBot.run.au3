@@ -10,6 +10,10 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
+; samm0d
+#include <WinAPILocale.au3>
+Global $g_iLCID = _WinAPI_GetUserDefaultLCID()
+
 ; AutoIt pragmas
 #NoTrayIcon
 #RequireAdmin
@@ -68,7 +72,7 @@ InitializeBot()
 MainLoop()
 
 Func UpdateBotTitle()
-	Local $sTitle = "My Bot " & $g_sBotVersion & " @Samkie M0d v1.2.4 "
+	Local $sTitle = "My Bot " & $g_sBotVersion & " @Samkie M0d v1.2.5 "
 	If $g_sBotTitle = "" Then
 		$g_sBotTitle = $sTitle
 	Else

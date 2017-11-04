@@ -273,9 +273,6 @@ Func btnTestTrain()
 	SetLog("===START===")
 	Local $hTimer = __TimerInit()
 
-	; samm0d
-
-
 	$g_bRestart = False
 	$tempDisableTrain=False
 	$tempDisableBrewSpell=False
